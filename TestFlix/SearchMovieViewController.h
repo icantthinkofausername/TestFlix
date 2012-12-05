@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface SearchMovieViewController : UIViewController
+- (IBAction)backgroundTouched:(id)sender;
 @end
