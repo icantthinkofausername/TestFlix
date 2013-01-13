@@ -23,6 +23,8 @@
 @synthesize averageRating = _averageRating;
 @synthesize mpaaRating = _mpaaRating;
 @synthesize synopsis = _synopsis;
+@synthesize instantFormat = _instantFormat;
+@synthesize dvdFormat = _dvdFormat;
 
 -(NSString*) mpaaRating
 {
@@ -30,6 +32,7 @@
         for(Category * category in self.category) {
             if([category.scheme.absoluteString rangeOfString:@"mpaa_ratings"].location != NSNotFound) {
                 _mpaaRating = category.label;
+                break;
             }
         }
     } 
@@ -42,10 +45,80 @@
         for(Link *link in self.link) {
             if([link.title rangeOfString:@"synopsis"].location != NSNotFound) {
                 _synopsis = link.synopsis;
+                break;
             }
         }
     }
     return _synopsis;
+}
+
+-(NSNumber*) instantFormat
+{
+    // there has got to be a better way...
+    if(! _instantFormat) {
+        for(Link *link in self.link) {
+            if([link.title rangeOfString:@"formats"].location != NSNotFound) {
+                if([[link.deliveryFormats objectForKey:@"availability"] isKindOfClass: [NSMutableDictionary class]]){
+                    NSMutableDictionary *availabilityDict = [link.deliveryFormats objectForKey:@"availability"];
+                    if([[[availabilityDict objectForKey:@"category" ] objectForKey:@"label"] rangeOfString:@"instant"].location != NSNotFound) {
+                        _instantFormat = [[NSNumber alloc] initWithBool:YES];
+                    }
+                }
+                else {
+                    for(NSMutableDictionary *availabilityDict in [link.deliveryFormats objectForKey:@"availability" ]) {
+                        if([[[availabilityDict objectForKey:@"category" ] objectForKey:@"label"] rangeOfString:@"instant"].location != NSNotFound) {
+                            _instantFormat = [[NSNumber alloc] initWithBool:YES];
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if(_instantFormat) {
+                break;
+            }
+        }
+    }
+    
+    if(! _instantFormat) {
+        _instantFormat = [[NSNumber alloc] initWithBool:NO];
+    }
+    return _instantFormat;
+}
+
+-(NSNumber*) dvdFormat
+{
+    // there has got to be a better way...
+    if(! _dvdFormat) {
+        for(Link *link in self.link) {
+            if([link.title rangeOfString:@"formats"].location != NSNotFound) {
+                if([[link.deliveryFormats objectForKey:@"availability"] isKindOfClass: [NSMutableDictionary class]]){
+                    NSMutableDictionary *availabilityDict = [link.deliveryFormats objectForKey:@"availability"];
+                    if([[[availabilityDict objectForKey:@"category" ] objectForKey:@"label"] rangeOfString:@"DVD"].location != NSNotFound) {
+                        _dvdFormat = [[NSNumber alloc] initWithBool:YES];
+                    }
+                }
+                else
+                {
+                    for(NSMutableDictionary *availabilityDict in [link.deliveryFormats objectForKey:@"availability" ]) {
+                        if([[[availabilityDict objectForKey:@"category" ] objectForKey:@"label"] rangeOfString:@"DVD"].location != NSNotFound) {
+                            _dvdFormat = [[NSNumber alloc] initWithBool:YES];
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if(_dvdFormat) {
+                break;
+            }
+        }
+    }
+    
+    if(! _dvdFormat) {
+        _dvdFormat = [[NSNumber alloc] initWithBool:NO];
+    }
+    return _dvdFormat;
 }
 
 @end

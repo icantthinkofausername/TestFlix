@@ -14,5 +14,5 @@
 @property (nonatomic, retain) NSString *synopsis;
 @property (nonatomic, retain) NSURL *href;
 @property (nonatomic, retain) NSURL *rel;
-
+@property (nonatomic, retain) NSMutableDictionary *deliveryFormats;
 @end

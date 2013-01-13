@@ -43,19 +43,21 @@
         int64_t delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.tableView beginUpdates];
+            if(self.catalogTitles) {
+                [self.tableView beginUpdates];
             
-            NSString *startIndex = [NSString stringWithFormat:@"%d",self.catalogTitles.startIndex + NUMBER_OF_ROWS]; //%d or %i both is ok.
-            RKObjectManager *objectManager = [RKObjectManager sharedManager];
-            NSMutableString *searchUrl = [[NSMutableString alloc] initWithString:self.catalogTitles.searchUrl];
-            [searchUrl appendString:@"&start_index="];
-            [searchUrl appendString:startIndex];
-            [objectManager loadObjectsAtResourcePath: searchUrl delegate:loadObjectsDelegate];
-            //[mutableCatalogTitles addObject:[mutableCatalogTitles lastObject]];
-            //[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:mutableCatalogTitles.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-            //self.catalogTitles.catalogTitle = [NSArray arrayWithArray:mutableCatalogTitles];
+                NSString *startIndex = [NSString stringWithFormat:@"%d",self.catalogTitles.startIndex + NUMBER_OF_ROWS]; //%d or %i both is ok.
+                RKObjectManager *objectManager = [RKObjectManager sharedManager];
+                NSMutableString *searchUrl = [[NSMutableString alloc] initWithString:self.catalogTitles.searchUrl];
+                [searchUrl appendString:@"&start_index="];
+                [searchUrl appendString:startIndex];
+                [objectManager loadObjectsAtResourcePath: searchUrl delegate:loadObjectsDelegate];
+                //[mutableCatalogTitles addObject:[mutableCatalogTitles lastObject]];
+                //[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:mutableCatalogTitles.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+                //self.catalogTitles.catalogTitle = [NSArray arrayWithArray:mutableCatalogTitles];
             
-            [self.tableView endUpdates];            
+                [self.tableView endUpdates];
+            }
             [self.tableView.infiniteScrollingView stopAnimating];
         });
     }];
@@ -88,7 +90,12 @@
 {
     // #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return self.catalogTitles.catalogTitle.count;
+    if(self.catalogTitles) {
+        return self.catalogTitles.catalogTitle.count;
+    }
+    else{
+        return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -99,9 +106,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
-    
     // Configure the cell...
     cell.textLabel.text = [[self.catalogTitles.catalogTitle objectAtIndex:indexPath.row] regularTitle];
+    
     return cell;
 }
 
@@ -112,10 +119,34 @@
         CatalogTitle *catalogTitle = [self.catalogTitles.catalogTitle objectAtIndex:indexPath.row];
         MovieDetailViewController *mdvc = (MovieDetailViewController *)[segue destinationViewController];
         mdvc.catalogTitle = catalogTitle;
-        catalogTitle.synopsis;
     }
 }
 
+- (void)request:(RKRequest*)request didLoadResponse:(RKResponse*)response
+{
+    if ([request isGET]) {
+        // Handling GET /foo.xml
+        
+        if ([response isOK]) {
+            // Success! Let's take a look at the data
+            NSLog(@"Retrieved XML: %@", [response bodyAsString]);
+        }
+        
+    } else if ([request isPOST]) {
+        
+        // Handling POST /other.json
+        if ([response isJSON]) {
+            NSLog(@"Got a JSON response back from our POST!");
+        }
+        
+    } else if ([request isDELETE]) {
+        
+        // Handling DELETE /missing_resource.txt
+        if ([response isNotFound]) {
+            NSLog(@"The resource path '%@' was not found.", [request resourcePath]);
+        }
+    }
+}
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects
 {
     RKLogInfo(@"Load collection of Articles: %@", objects);
@@ -142,6 +173,13 @@
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error
 {
     NSLog(@"Encountered an error: %@", error);
+    /* open an alert with an OK button */
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:@"There seems to be a problem connecting to netflix!"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles: nil];
+    [alert show];
 }
 
 /*

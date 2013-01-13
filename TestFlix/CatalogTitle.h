@@ -21,5 +21,6 @@
 @property (nonatomic, retain) NSString *averageRating;
 @property (nonatomic, retain) NSMutableArray  *category;
 @property (nonatomic, retain) NSMutableArray *link;
-
+@property (nonatomic, retain) NSNumber *instantFormat;
+@property (nonatomic, retain) NSNumber *dvdFormat;
 @end

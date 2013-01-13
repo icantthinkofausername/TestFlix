@@ -15,6 +15,29 @@
 
 @implementation AppDelegate
 
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    if (!url) {  return NO; }
+    
+    NSString *URLString = [url absoluteString];
+    if([URLString rangeOfString: @"goBack"].length != NSNotFound) {
+
+        NSMutableDictionary *queryParams = [[NSMutableDictionary alloc] init];
+        NSArray *components = [URLString componentsSeparatedByString:@"&"];
+        
+        for (NSString *component in components) {
+            NSArray *pair = [component componentsSeparatedByString:@"="];
+            [queryParams setObject:[[pair objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding: NSMacOSRomanStringEncoding]
+                            forKey:[pair objectAtIndex:0]];
+        }
+        
+        //  self.oauthToken = [queryParams objectForKey:@"oauth_token"];
+        UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+        [(UINavigationController*)tabBarController.selectedViewController popViewControllerAnimated:YES];
+    }
+    return YES;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
@@ -28,6 +51,7 @@
     [linkMapping mapKeyPath:@"rel" toAttribute:@"rel"];
     [linkMapping mapKeyPath:@"title" toAttribute:@"title"];
     [linkMapping mapKeyPath:@"synopsis" toAttribute:@"synopsis"];
+    [linkMapping mapKeyPath:@"delivery_formats" toAttribute:@"deliveryFormats"];
     
     RKObjectMapping* categoryMapping = [RKObjectMapping mappingForClass:[Category class]];
     [categoryMapping mapKeyPath:@"scheme" toAttribute:@"scheme"];
@@ -52,41 +76,6 @@
     
     [objectManager.mappingProvider setObjectMapping:catalogTitlesMapping forKeyPath:@"catalog_titles"];
     
-
-    //RKObjectMapping* testMapping = [RKObjectMapping mappingForClass:[test class]];
-   // [testMapping mapKeyPath:@"" toAttribute:@"testStr"];
-    
-   // [objectManager.mappingProvider setObjectMapping:testMapping forKeyPath:@"synopsis"];
-    
-    /* NSURL *baseURL = [NSURL URLWithString:@"http://api-public.netflix.com"];
-    RKObjectManager *objectManager = [RKObjectManager objectManagerWithBaseURL:baseURL];
-    // objectManager.client.baseURL = [RKURL URLWithBaseURLString:@"http://api-public.netflix.com"];
-    objectManager.client.OAuth1ConsumerKey = @"62q3pac4cjd25uybzk2ym88n";
-    objectManager.client.OAuth1ConsumerSecret = @"RNJyuPbYze";
-    // objectManager.client.OAuth1AccessToken = @"YOUR ACCESS TOKEN";
-    //objectManager.client.OAuth1AccessTokenSecret = @"YOUR ACCESS TOKEN SECRET";
-    objectManager.client.authenticationType = RKRequestAuthenticationTypeOAuth1;
-    
-    NSMutableString *searchUrl = [[NSMutableString alloc] initWithString:@"/catalog/titles?term="];
-    [searchUrl appendString:self.searchField.text];
-    NSString *url = [[RKURL URLWithBaseURL:[objectManager baseURL] resourcePath:searchUrl] description];
-    
-    RKObjectMapping* catalogTitleMapping = [RKObjectMapping mappingForClass:[CatalogTitle class]];
-    [catalogTitleMapping mapKeyPath:@"title.regular" toAttribute:@"regularTitle"];
-    
-    RKObjectMapping* catalogTitlesMapping = [RKObjectMapping mappingForClass:[CatalogTitles class]];
-    [catalogTitlesMapping mapKeyPath:@"number_of_results" toAttribute:@"numberOfResults"];
-    [catalogTitlesMapping mapKeyPath:@"catalog_title" toRelationship:@"catalogTitle" withMapping:catalogTitleMapping];
-    
-    [objectManager.mappingProvider setObjectMapping:catalogTitlesMapping forKeyPath:@"catalog_titles"];
-    [objectManager loadObjectsAtResourcePath:searchUrl  delegate:self];
-    
-    //[catalogMapping mapKeyPath:@"start_index" toAttribute:@"startIndex"];
-    // [catalogMapping mapKeyPath:@"results_per_page" toAttribute:@"resultsPerPage"];
-    //    [catalogMapping mapKeyPath:@"catalog_title.box_art.small" toAttribute:@"smallBoxArtUrl"];
-    
-    
-    
     
     //  RKObjectManager* objectManager = [RKObjectManager sharedManager];
     /* objectManager.client.baseURL = @"YOUR_BASE_URL";
@@ -97,21 +86,52 @@
      objectManager.client.authenticationType = RKRequestAuthenticationTypeOAuth1;*/
     //RKObjectManager *objectManager = [[RKObjectManager alloc] initWithBaseURL:[[RKURL alloc] initWithString:<#(NSString *)#>];
     
-    
-    
-    
-    
-    
-    
-    // http://stackoverflow.com/questions/11746317/post-from-ios-for-insert-using-rkobjectmanager
-    //  NSURL *url = [NSURL URLWithString:@"http://api-public.netflix.com"];
-    //  RKClient* client = [RKClient clientWithBaseURL:url];
-    //  client.OAuth1ConsumerKey = @"62q3pac4cjd25uybzk2ym88n";
-    // client.OAuth1ConsumerSecret = @"RNJyuPbYze";
-    // client.authenticationType = RKRequestAuthenticationTypeOAuth1;     */
-    
     return YES;
 }
+
+- (void)request:(RKRequest*)request didLoadResponse:(RKResponse*)response
+{
+    if ([request isGET]) {
+        // Handling GET /foo.xml
+        
+        if ([response isOK]) {
+            // Success! Let's take a look at the data
+            NSLog(@"Retrieved XML: %@", [response bodyAsString]);
+        }
+        
+    } else if ([request isPOST]) {
+        
+        // Handling POST /other.json
+        if ([response isJSON]) {
+            NSLog(@"Got a JSON response back from our POST!");
+        }
+        
+    } else if ([request isDELETE]) {
+        
+        // Handling DELETE /missing_resource.txt
+        if ([response isNotFound]) {
+            NSLog(@"The resource path '%@' was not found.", [request resourcePath]);
+        }
+    }
+}
+
+- (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects
+{
+    RKLogInfo(@"Load collection of Articles: %@", objects);
+}
+
+- (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error
+{
+    NSLog(@"Encountered an error: %@", error);
+    /* open an alert with an OK button */
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:@"There seems to be a problem connecting to netflix!"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles: nil];
+    [alert show];
+}
+
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {

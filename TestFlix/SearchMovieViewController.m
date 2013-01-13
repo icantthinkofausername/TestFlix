@@ -12,6 +12,7 @@
 #import "CatalogTitle.h"
 #import <RestKit/RestKit.h>
 
+
 @interface SearchMovieViewController () <RKRequestDelegate, RKObjectLoaderDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *searchField;
@@ -85,8 +86,11 @@
     if(objects.count > 0) {
         self.catalogTitles = [objects objectAtIndex:0];
         self.catalogTitles.searchUrl = self.searchUrl;
+        NSLog(@"Number of results is %d", [self.catalogTitles.numberOfResults integerValue]);
     }
-    NSLog(@"Number of results is %d", [self.catalogTitles.numberOfResults integerValue]);
+    else {
+        self.catalogTitles = nil;
+    }
     
     [[self searchField] resignFirstResponder];
 }
@@ -94,20 +98,28 @@
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error
 {
     NSLog(@"Encountered an error: %@", error);
+    /* open an alert with an OK button */
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:@"There seems to be a problem connecting to netflix!"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles: nil];
+    [alert show];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     //[[self searchField] resignFirstResponder];
     RKObjectManager *objectManager = [RKObjectManager sharedManager];
-    self.searchUrl = [[NSMutableString alloc] initWithString:@"/catalog/titles?expand=synopsis&term="];
-    [self.searchUrl appendString:self.searchField.text];
+    self.searchUrl = [[NSMutableString alloc] initWithString:@"/catalog/titles?expand=synopsis,formats&term="];
+    [self.searchUrl appendString: [self.searchField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [objectManager loadObjectsAtResourcePath:self.searchUrl  delegate:self];
 
     return YES;
 }
 
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
     if ([identifier isEqualToString:@"SearchMovieViewControllerSegue"]) {
         if([self.searchField.text length] != 0) {
             return YES;

@@ -14,5 +14,6 @@
 @synthesize rel = _rel;
 @synthesize title = _title;
 @synthesize synopsis = _synopsis;
+@synthesize deliveryFormats = _deliveryFormats;
 
 @end
