@@ -9,7 +9,7 @@
 #import "NetflixLoginViewController.h"
 #import <RestKit/RestKit.h>
 
-@interface NetflixLoginViewController () <RKRequestDelegate, RKObjectLoaderDelegate>
+@interface NetflixLoginViewController ()
 @end
 
 @implementation NetflixLoginViewController

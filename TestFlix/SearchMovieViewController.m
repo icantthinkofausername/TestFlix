@@ -121,7 +121,7 @@
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
     if ([identifier isEqualToString:@"SearchMovieViewControllerSegue"]) {
-        if([self.searchField.text length] != 0) {
+        if([[[self searchField] text] length] != 0) {
             return YES;
         }
     }

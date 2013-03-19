@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <RestKit/RestKit.h>
 
-@interface NetflixLoginViewController : UIViewController
+@interface NetflixLoginViewController : UIViewController<RKRequestDelegate, RKObjectLoaderDelegate, UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIWebView *loginWebView;
 @property NSString *oauthToken;
 @property NSString *applicationName;

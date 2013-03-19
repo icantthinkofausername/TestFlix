@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "CatalogTitle.h"
+#import <RestKit/RestKit.h>
 
-@interface MovieDetailViewController : UIViewController
+@interface MovieDetailViewController : UIViewController<RKRequestDelegate, RKObjectLoaderDelegate, UIWebViewDelegate>
 
-@property CatalogTitle *catalogTitle;
+@property (nonatomic, strong) CatalogTitle *catalogTitle;
 
 @end

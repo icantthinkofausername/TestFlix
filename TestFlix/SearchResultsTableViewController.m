@@ -36,6 +36,8 @@
 {
     [super viewDidLoad];
     
+    CatalogTitles *catalogTitles = [self catalogTitles];
+    UITableView *tableView = [self tableView];
     // setup infinite scrolling
     id loadObjectsDelegate = self;
     [self.tableView addInfiniteScrollingWithActionHandler:^{
@@ -43,12 +45,12 @@
         int64_t delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            if(self.catalogTitles) {
-                [self.tableView beginUpdates];
+            if(catalogTitles) {
+                [tableView beginUpdates];
             
-                NSString *startIndex = [NSString stringWithFormat:@"%d",self.catalogTitles.startIndex + NUMBER_OF_ROWS]; //%d or %i both is ok.
+                NSString *startIndex = [NSString stringWithFormat:@"%d",[catalogTitles startIndex] + NUMBER_OF_ROWS]; //%d or %i both is ok.
                 RKObjectManager *objectManager = [RKObjectManager sharedManager];
-                NSMutableString *searchUrl = [[NSMutableString alloc] initWithString:self.catalogTitles.searchUrl];
+                NSMutableString *searchUrl = [[NSMutableString alloc] initWithString:[catalogTitles searchUrl]];
                 [searchUrl appendString:@"&start_index="];
                 [searchUrl appendString:startIndex];
                 [objectManager loadObjectsAtResourcePath: searchUrl delegate:loadObjectsDelegate];
@@ -56,9 +58,9 @@
                 //[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:mutableCatalogTitles.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
                 //self.catalogTitles.catalogTitle = [NSArray arrayWithArray:mutableCatalogTitles];
             
-                [self.tableView endUpdates];
+                [tableView endUpdates];
             }
-            [self.tableView.infiniteScrollingView stopAnimating];
+            [[tableView infiniteScrollingView] stopAnimating];
         });
     }];
 

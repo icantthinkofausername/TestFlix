@@ -14,7 +14,7 @@
  */
 
 #import "OAuthViewControllerTouch.h"
-#import "GTMOAuthObject.h"
+#import "OAuthStore.h"
 #import "GTMOAuthAuthentication.h"
 #import "GTMOAuthViewControllerTouch.h"
 #import <RestKit/RestKit.h>
@@ -67,7 +67,7 @@ static NSString *const kKeychainItemName = @"Testflix";
     
     // Perhaps we have a saved authorization; try getting
     // that from the keychain
-    GTMOAuthAuthentication *auth = [GTMOAuthObject sharedSingleton];
+    GTMOAuthAuthentication *auth = [[OAuthStore sharedSingleton] gtmoAuthAuthentication];
     if (auth) {
         BOOL didAuth = [GTMOAuthViewControllerTouch authorizeFromKeychainForName:kKeychainItemName
                                                                   authentication:auth];
@@ -141,12 +141,12 @@ static NSString *const kKeychainItemName = @"Testflix";
     
     [self signOut];
     
-    NSURL *requestURL = [NSURL URLWithString:@"http://api-public.netflix.com/oauth/request_token"];
-    NSURL *accessURL = [NSURL URLWithString:@"http://api-public.netflix.com/oauth/access_token"];
-    NSURL *authorizeURL = [NSURL URLWithString:@"http://api-user.netflix.com/oauth/login"];
-    NSString *scope = @"http://api-public.netflix.com";
+    NSURL *requestURL = [NSURL URLWithString:[[OAuthStore sharedSingleton] requestURL]];
+    NSURL *accessURL = [NSURL URLWithString:[[OAuthStore sharedSingleton] accessURL]];
+    NSURL *authorizeURL = [NSURL URLWithString:[[OAuthStore sharedSingleton] authorizeURL]];
+    NSString *scope = [[OAuthStore sharedSingleton] baseURL];
     
-    GTMOAuthAuthentication *auth = [GTMOAuthObject sharedSingleton];
+    GTMOAuthAuthentication *auth = [[OAuthStore sharedSingleton] gtmoAuthAuthentication];
     if (auth == nil) {
         // perhaps display something friendlier in the UI?
         NSAssert(NO, @"A valid consumer key and consumer secret are required for signing in.");
@@ -180,7 +180,7 @@ static NSString *const kKeychainItemName = @"Testflix";
     // We can set a URL for deleting the cookies after sign-in so the next time
     // the user signs in, the browser does not assume the user is already signed
     // in
-    [viewController setBrowserCookiesURL:[NSURL URLWithString:@"http://api-public.netflix.com"]];
+    [viewController setBrowserCookiesURL:[NSURL URLWithString: scope]];
     
     // You can set the title of the navigationItem of the controller here, if you want.
     [[self navController] pushViewController:viewController animated:YES];

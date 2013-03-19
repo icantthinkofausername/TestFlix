@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		033B071116A23B13000F2090 /* GTMOAuthObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 033B071016A23B13000F2090 /* GTMOAuthObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		03289B6716F7FBE300AFCC64 /* OAuthSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03289B6616F7FBE300AFCC64 /* OAuthSettings.plist */; };
+		033B071116A23B13000F2090 /* OAuthStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 033B071016A23B13000F2090 /* OAuthStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0345820E1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345820B1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m */; };
 		0345820F1642249600A7E4CE /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345820D1642249600A7E4CE /* UIScrollView+SVPullToRefresh.m */; };
 		03639B2A16A1C28100B367CA /* OAuthViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 03639B2916A1C28100B367CA /* OAuthViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -131,8 +132,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		033B070F16A23B13000F2090 /* GTMOAuthObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuthObject.h; sourceTree = "<group>"; };
-		033B071016A23B13000F2090 /* GTMOAuthObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuthObject.m; sourceTree = "<group>"; };
+		03289B6616F7FBE300AFCC64 /* OAuthSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = OAuthSettings.plist; sourceTree = "<group>"; };
+		033B070F16A23B13000F2090 /* OAuthStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthStore.h; sourceTree = "<group>"; };
+		033B071016A23B13000F2090 /* OAuthStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthStore.m; sourceTree = "<group>"; };
 		034582091642249600A7E4CE /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
 		0345820A1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
 		0345820B1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
@@ -248,6 +250,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03289B6816F81D8F00AFCC64 /* old */ = {
+			isa = PBXGroup;
+			children = (
+				03EE557C16901037008DA014 /* NetflixLoginViewController.h */,
+				03EE557D16901037008DA014 /* NetflixLoginViewController.m */,
+			);
+			name = old;
+			sourceTree = "<group>";
+		};
 		034582081642249600A7E4CE /* SVPullToRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,8 +289,6 @@
 				037834EB1624F7CF00827EB6 /* MovieDetailViewController.m */,
 				03BC8B24160FABBE00AF2E71 /* SearchResultsTableViewController.h */,
 				03BC8B25160FABBE00AF2E71 /* SearchResultsTableViewController.m */,
-				03EE557C16901037008DA014 /* NetflixLoginViewController.h */,
-				03EE557D16901037008DA014 /* NetflixLoginViewController.m */,
 				03639B2816A1C28100B367CA /* OAuthViewControllerTouch.h */,
 				03639B2916A1C28100B367CA /* OAuthViewControllerTouch.m */,
 			);
@@ -289,6 +298,8 @@
 		03B473B1161A8714001B3EAE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				033B070F16A23B13000F2090 /* OAuthStore.h */,
+				033B071016A23B13000F2090 /* OAuthStore.m */,
 				03BC8B27160FC3C700AF2E71 /* CatalogTitles.h */,
 				03BC8B28160FC3C700AF2E71 /* CatalogTitles.m */,
 				03B473AC161A8641001B3EAE /* CatalogTitle.h */,
@@ -421,6 +432,7 @@
 		03D0FE7015FD92720051D36A /* TestFlix */ = {
 			isa = PBXGroup;
 			children = (
+				03289B6816F81D8F00AFCC64 /* old */,
 				03D4B4E71630FB14003EDDFA /* Views */,
 				03B473AF161A86EC001B3EAE /* AppDelegate */,
 				03B473B0161A8708001B3EAE /* Controllers */,
@@ -435,12 +447,11 @@
 		03D0FE7115FD92720051D36A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				03289B6616F7FBE300AFCC64 /* OAuthSettings.plist */,
 				03D0FE7215FD92720051D36A /* TestFlix-Info.plist */,
 				03D0FE7315FD92720051D36A /* InfoPlist.strings */,
 				03D0FE7615FD92720051D36A /* main.m */,
 				03D0FE7815FD92720051D36A /* TestFlix-Prefix.pch */,
-				033B070F16A23B13000F2090 /* GTMOAuthObject.h */,
-				033B071016A23B13000F2090 /* GTMOAuthObject.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -533,7 +544,7 @@
 		03D0FE5D15FD92720051D36A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Joshua Palermo";
 			};
 			buildConfigurationList = 03D0FE6015FD92720051D36A /* Build configuration list for PBXProject "TestFlix" */;
@@ -612,6 +623,7 @@
 				03C213EF16A30F09000DBB02 /* README.md in Resources */,
 				03C213F316A30F09000DBB02 /* GTMOAuthViewTouch.xib in Resources */,
 				03C213F516A30F09000DBB02 /* UnitTests-Info.plist in Resources */,
+				03289B6716F7FBE300AFCC64 /* OAuthSettings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,7 +678,7 @@
 				0384B3EA165C80D20036328E /* Link.m in Sources */,
 				03EE557E16901037008DA014 /* NetflixLoginViewController.m in Sources */,
 				03639B2A16A1C28100B367CA /* OAuthViewControllerTouch.m in Sources */,
-				033B071116A23B13000F2090 /* GTMOAuthObject.m in Sources */,
+				033B071116A23B13000F2090 /* OAuthStore.m in Sources */,
 				03C213D916A30F09000DBB02 /* GTMOAuthAuthentication.m in Sources */,
 				03C213DB16A30F09000DBB02 /* GTMOAuthSignIn.m in Sources */,
 				03C213DD16A30F09000DBB02 /* GTMGatherInputStream.m in Sources */,
@@ -759,6 +771,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -787,6 +802,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -810,6 +828,7 @@
 				GCC_PREFIX_HEADER = "TestFlix/TestFlix-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "TestFlix/TestFlix-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -827,6 +846,7 @@
 				GCC_PREFIX_HEADER = "TestFlix/TestFlix-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "TestFlix/TestFlix-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",

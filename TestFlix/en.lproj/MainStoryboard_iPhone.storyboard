@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C3006" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="W4V-Yb-WDA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="W4V-Yb-WDA">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--Search Movie View Controller-->
@@ -26,8 +26,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <outlet property="delegate" destination="2" id="sEn-fK-sXx"/>
-                                    <segue destination="Jph-gf-TkX" kind="push" identifier="SearchMovieViewControllerSegue" id="MEI-sn-Cil"/>
+                                    <outlet property="delegate" destination="2" id="he8-w7-iiM"/>
+                                    <segue destination="Jph-gf-TkX" kind="push" identifier="SearchMovieViewControllerSegue" id="3zp-1T-gx2"/>
                                 </connections>
                             </textField>
                         </subviews>
@@ -38,7 +38,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="9jk-uN-LHa"/>
                     <connections>
-                        <outlet property="searchField" destination="VGu-SO-ub4" id="rx7-JO-wTf"/>
+                        <outlet property="searchField" destination="VGu-SO-ub4" id="5Iw-L3-q6Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -299,51 +299,6 @@
             <point key="canvasLocation" x="-552" y="279"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="MovieDetailViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MovieDetailViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="addDvdButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="addInstantButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="movieBoxArtImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="movieSynopsisTextView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="movieSynopsisWebView" candidateClass="UIWebView"/>
-                <relationship kind="outlet" name="movieTitleLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="oauthViewControllerTouch" candidateClass="OAuthViewControllerTouch"/>
-                <relationship kind="outlet" name="playButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="removeDvdButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="removeInstantButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="NetflixLoginViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NetflixLoginViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="loginWebView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="OAuthViewControllerTouch" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OAuthViewControllerTouch.h"/>
-            <relationships>
-                <relationship kind="action" name="signInOutClicked:"/>
-                <relationship kind="action" name="toggleShouldSaveInKeychain:"/>
-                <relationship kind="outlet" name="emailField" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="serviceSegments" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="shouldSaveInKeychainSwitch" candidateClass="UISwitch"/>
-                <relationship kind="outlet" name="signInOutButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="tokenField" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SearchMovieViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchMovieViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backgroundTouched:"/>
-                <relationship kind="outlet" name="searchField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="SearchResultsTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchResultsTableViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

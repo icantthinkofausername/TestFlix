@@ -11,7 +11,7 @@
 #import <RestKit/RestKit.h>
 #import "OAuthViewControllerTouch.h"
 
-@interface MovieDetailViewController () <RKRequestDelegate, RKObjectLoaderDelegate>
+@interface MovieDetailViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *movieBoxArtImageView;
 @property (weak, nonatomic) IBOutlet UILabel *movieTitleLabel;

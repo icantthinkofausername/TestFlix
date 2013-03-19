@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>baseUrl</key>
+	<string>http://api-public.netflix.com</string>
+	<key>requestUrl</key>
+	<string>http://api-public.netflix.com/oauth/request_token</string>
+	<key>accessUrl</key>
+	<string>http://api-public.netflix.com/oauth/access_token</string>
+	<key>authorizeUrl</key>
+	<string>http://api-user.netflix.com/oauth/login</string>
+	<key>consumerKey</key>
+	<string>foo</string>
+	<key>consumerSecret</key>
+	<string>bar</string>
+</dict>
+</plist>

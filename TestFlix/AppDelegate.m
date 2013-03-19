@@ -11,6 +11,7 @@
 #import "CatalogTitle.h"
 #import "Link.h"
 #import "Category.h"
+#import "OAuthStore.h"
 #import <RestKit/RestKit.h>
 
 @implementation AppDelegate
@@ -41,9 +42,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    RKObjectManager *objectManager = [RKObjectManager managerWithBaseURLString:@"http://api-public.netflix.com"];
-    objectManager.client.OAuth1ConsumerKey = @"62q3pac4cjd25uybzk2ym88n";
-    objectManager.client.OAuth1ConsumerSecret = @"RNJyuPbYze";
+    OAuthStore *auth = [OAuthStore sharedSingleton];
+    RKObjectManager *objectManager = [RKObjectManager managerWithBaseURLString:[auth baseURL]];
+    objectManager.client.OAuth1ConsumerKey = [auth consumerKey];
+    objectManager.client.OAuth1ConsumerSecret = [auth consumerSecret];
     objectManager.client.authenticationType = RKRequestAuthenticationTypeOAuth1;
     
     RKObjectMapping* linkMapping = [RKObjectMapping mappingForClass:[Link class]];
