@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "CatalogTitles.h"
+#import "MovieDetailViewController.h"
 
 @interface SearchResultsTableViewController : UITableViewController
 
-@property CatalogTitles *catalogTitles;
+@property (nonatomic, strong) CatalogTitles *catalogTitles;
+@property (nonatomic, strong) MovieDetailViewController *mdvc;
 
 @end

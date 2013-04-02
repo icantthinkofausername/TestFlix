@@ -52,6 +52,10 @@
 		03C213F416A30F09000DBB02 /* GTMOAuthViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03C213D416A30F09000DBB02 /* GTMOAuthViewTouch.xib */; };
 		03C213F516A30F09000DBB02 /* UnitTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03C213D616A30F09000DBB02 /* UnitTests-Info.plist */; };
 		03C213F616A30F09000DBB02 /* UnitTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03C213D616A30F09000DBB02 /* UnitTests-Info.plist */; };
+		03CCE63A16F93EAF007004A6 /* SearchMovieViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CCE63916F93EAF007004A6 /* SearchMovieViewController.xib */; };
+		03CCE63C16F94829007004A6 /* SearchResultsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CCE63B16F94829007004A6 /* SearchResultsTableViewController.xib */; };
+		03CCE63E16F958AB007004A6 /* MovieDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CCE63D16F958AB007004A6 /* MovieDetailViewController.xib */; };
+		03CCE64616F9627B007004A6 /* OAuthViewControllerTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CCE64516F9627B007004A6 /* OAuthViewControllerTouch.xib */; };
 		03D0FE6B15FD92720051D36A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D0FE6A15FD92720051D36A /* UIKit.framework */; };
 		03D0FE6D15FD92720051D36A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D0FE6C15FD92720051D36A /* Foundation.framework */; };
 		03D0FE6F15FD92720051D36A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D0FE6E15FD92720051D36A /* CoreGraphics.framework */; };
@@ -182,6 +186,10 @@
 		03C213D316A30F09000DBB02 /* GTMOAuthViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuthViewControllerTouch.m; sourceTree = "<group>"; };
 		03C213D416A30F09000DBB02 /* GTMOAuthViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuthViewTouch.xib; sourceTree = "<group>"; };
 		03C213D616A30F09000DBB02 /* UnitTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "UnitTests-Info.plist"; path = "GTMOAuth/UnitTests-Info.plist"; sourceTree = "<group>"; };
+		03CCE63916F93EAF007004A6 /* SearchMovieViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchMovieViewController.xib; sourceTree = "<group>"; };
+		03CCE63B16F94829007004A6 /* SearchResultsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewController.xib; sourceTree = "<group>"; };
+		03CCE63D16F958AB007004A6 /* MovieDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MovieDetailViewController.xib; sourceTree = "<group>"; };
+		03CCE64516F9627B007004A6 /* OAuthViewControllerTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OAuthViewControllerTouch.xib; sourceTree = "<group>"; };
 		03D0FE6615FD92720051D36A /* TestFlix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestFlix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D0FE6A15FD92720051D36A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		03D0FE6C15FD92720051D36A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -300,6 +308,10 @@
 			children = (
 				033B070F16A23B13000F2090 /* OAuthStore.h */,
 				033B071016A23B13000F2090 /* OAuthStore.m */,
+				03D4B4E816310A53003EDDFA /* DataTableViewCell.h */,
+				03D4B4E916310A53003EDDFA /* DataTableViewCell.m */,
+				03D4B4E51630FB04003EDDFA /* AsynchronousImageView.m */,
+				03D4B4E41630FB04003EDDFA /* AsynchronousImageView.h */,
 				03BC8B27160FC3C700AF2E71 /* CatalogTitles.h */,
 				03BC8B28160FC3C700AF2E71 /* CatalogTitles.m */,
 				03B473AC161A8641001B3EAE /* CatalogTitle.h */,
@@ -437,8 +449,6 @@
 				03B473AF161A86EC001B3EAE /* AppDelegate */,
 				03B473B0161A8708001B3EAE /* Controllers */,
 				03B473B1161A8714001B3EAE /* Model */,
-				03D0FE7F15FD92720051D36A /* MainStoryboard_iPad.storyboard */,
-				03D0FE7C15FD92720051D36A /* MainStoryboard_iPhone.storyboard */,
 				03D0FE7115FD92720051D36A /* Supporting Files */,
 			);
 			path = TestFlix;
@@ -490,10 +500,12 @@
 		03D4B4E71630FB14003EDDFA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				03D4B4E41630FB04003EDDFA /* AsynchronousImageView.h */,
-				03D4B4E51630FB04003EDDFA /* AsynchronousImageView.m */,
-				03D4B4E816310A53003EDDFA /* DataTableViewCell.h */,
-				03D4B4E916310A53003EDDFA /* DataTableViewCell.m */,
+				03CCE63916F93EAF007004A6 /* SearchMovieViewController.xib */,
+				03CCE63B16F94829007004A6 /* SearchResultsTableViewController.xib */,
+				03CCE63D16F958AB007004A6 /* MovieDetailViewController.xib */,
+				03D0FE7C15FD92720051D36A /* MainStoryboard_iPhone.storyboard */,
+				03D0FE7F15FD92720051D36A /* MainStoryboard_iPad.storyboard */,
+				03CCE64516F9627B007004A6 /* OAuthViewControllerTouch.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -624,6 +636,10 @@
 				03C213F316A30F09000DBB02 /* GTMOAuthViewTouch.xib in Resources */,
 				03C213F516A30F09000DBB02 /* UnitTests-Info.plist in Resources */,
 				03289B6716F7FBE300AFCC64 /* OAuthSettings.plist in Resources */,
+				03CCE63A16F93EAF007004A6 /* SearchMovieViewController.xib in Resources */,
+				03CCE63C16F94829007004A6 /* SearchResultsTableViewController.xib in Resources */,
+				03CCE63E16F958AB007004A6 /* MovieDetailViewController.xib in Resources */,
+				03CCE64616F9627B007004A6 /* OAuthViewControllerTouch.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,7 @@
 #import "Link.h"
 #import "Category.h"
 #import "OAuthStore.h"
+#import "SearchMovieViewController.h"
 #import <RestKit/RestKit.h>
 
 @implementation AppDelegate
@@ -20,7 +21,7 @@
 {
     if (!url) {  return NO; }
     
-    NSString *URLString = [url absoluteString];
+    /*NSString *URLString = [url absoluteString];
     if([URLString rangeOfString: @"goBack"].length != NSNotFound) {
 
         NSMutableDictionary *queryParams = [[NSMutableDictionary alloc] init];
@@ -35,13 +36,19 @@
         //  self.oauthToken = [queryParams objectForKey:@"oauth_token"];
         UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
         [(UINavigationController*)tabBarController.selectedViewController popViewControllerAnimated:YES];
-    }
+    }*/
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
     // Override point for customization after application launch.
+    SearchMovieViewController *smvc = [[SearchMovieViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: smvc];
+    [[self window] setRootViewController:navigationController];
+    
     OAuthStore *auth = [OAuthStore sharedSingleton];
     RKObjectManager *objectManager = [RKObjectManager managerWithBaseURLString:[auth baseURL]];
     objectManager.client.OAuth1ConsumerKey = [auth consumerKey];
@@ -77,17 +84,6 @@
     [catalogTitlesMapping mapKeyPath:@"catalog_title" toRelationship:@"catalogTitle" withMapping:catalogTitleMapping];
     
     [objectManager.mappingProvider setObjectMapping:catalogTitlesMapping forKeyPath:@"catalog_titles"];
-    
-    
-    //  RKObjectManager* objectManager = [RKObjectManager sharedManager];
-    /* objectManager.client.baseURL = @"YOUR_BASE_URL";
-     objectManager.client.OAuth1ConsumerKey = @"YOUR CONSUMER KEY";
-     objectManager.client.OAuth1ConsumerSecret = @"YOUR CONSUMER SECRET";
-     objectManager.client.OAuth1AccessToken = @"YOUR ACCESS TOKEN";
-     objectManager.client.OAuth1AccessTokenSecret = @"YOUR ACCESS TOKEN SECRET";
-     objectManager.client.authenticationType = RKRequestAuthenticationTypeOAuth1;*/
-    //RKObjectManager *objectManager = [[RKObjectManager alloc] initWithBaseURL:[[RKURL alloc] initWithString:<#(NSString *)#>];
-    
     return YES;
 }
 

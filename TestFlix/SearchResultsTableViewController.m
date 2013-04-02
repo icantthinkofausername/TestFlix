@@ -22,6 +22,7 @@
 @implementation SearchResultsTableViewController
 
 @synthesize catalogTitles = _catalogTitles;
+@synthesize mdvc = _mdvc;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -54,10 +55,6 @@
                 [searchUrl appendString:@"&start_index="];
                 [searchUrl appendString:startIndex];
                 [objectManager loadObjectsAtResourcePath: searchUrl delegate:loadObjectsDelegate];
-                //[mutableCatalogTitles addObject:[mutableCatalogTitles lastObject]];
-                //[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:mutableCatalogTitles.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-                //self.catalogTitles.catalogTitle = [NSArray arrayWithArray:mutableCatalogTitles];
-            
                 [tableView endUpdates];
             }
             [[tableView infiniteScrollingView] stopAnimating];
@@ -92,8 +89,8 @@
 {
     // #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    if(self.catalogTitles) {
-        return self.catalogTitles.catalogTitle.count;
+    if([self catalogTitles]) {
+        return [[[self catalogTitles]catalogTitle]count];
     }
     else{
         return 0;
@@ -102,14 +99,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"CatalogTitleCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"UITableViewCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
     // Configure the cell...
-    cell.textLabel.text = [[self.catalogTitles.catalogTitle objectAtIndex:indexPath.row] regularTitle];
+    [[cell textLabel] setText: [[[[self catalogTitles] catalogTitle] objectAtIndex:[indexPath row]] regularTitle]];
     
     return cell;
 }
@@ -117,10 +114,10 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([[segue identifier] isEqualToString:@"MovieDetailViewControllerSegue"]){
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        CatalogTitle *catalogTitle = [self.catalogTitles.catalogTitle objectAtIndex:indexPath.row];
+        NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+        CatalogTitle *catalogTitle = [[[self catalogTitles] catalogTitle] objectAtIndex:[indexPath row]];
         MovieDetailViewController *mdvc = (MovieDetailViewController *)[segue destinationViewController];
-        mdvc.catalogTitle = catalogTitle;
+        [mdvc setCatalogTitle: catalogTitle];
     }
 }
 
@@ -153,23 +150,18 @@
 {
     RKLogInfo(@"Load collection of Articles: %@", objects);
     
-    
-    //mutableCatalogTitles addObject:[mutableCatalogTitles lastObject]];
-    //[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:mutableCatalogTitles.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-    //self.catalogTitles.catalogTitle = [NSArray arrayWithArray:mutableCatalogTitles];
-    
-    //NSMutableArray *mutableCatalogTitles;
-    if(objects.count > 0) {
+    if([objects count] > 0) {
         CatalogTitles *catalogTitles = [objects objectAtIndex:0];
-        NSArray *catalogTitle = catalogTitles.catalogTitle;
-        for(int i = 0; i < catalogTitle.count; i++) {
-            [self.catalogTitles.catalogTitle addObject: [catalogTitle objectAtIndex:i]];
-            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow: self.catalogTitles.catalogTitle.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+        NSArray *catalogTitle = [catalogTitles catalogTitle];
+        for(int i = 0; i < [catalogTitle count]; i++) {
+            [[[self catalogTitles] catalogTitle] addObject: [catalogTitle objectAtIndex:i]];
+            
+            //  the @ sign is an array literal
+            [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow: [[[self catalogTitles] catalogTitle] count] -1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
         }
         self.catalogTitles.startIndex += NUMBER_OF_ROWS;
-        NSLog(@"Number of results is %d", catalogTitles.catalogTitle.count);
+        NSLog(@"Number of results is %d", [[catalogTitles catalogTitle] count]);
     }
-    //NSLog(@"Number of results is %d", [mutableCatalogTitles.numberOfResults integerValue]);
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error
@@ -227,13 +219,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    // Navigation logic may go here. Create and push another view controller.    
+    //MovieDetailViewController *mdvc = [[MovieDetailViewController alloc] init];
+    if([self mdvc] == nil) {
+        [self setMdvc: [[MovieDetailViewController alloc] init]];
+    }
+    CatalogTitle *catalogTitle = [[[self catalogTitles] catalogTitle] objectAtIndex:[indexPath row]];
+    [[self mdvc] setCatalogTitle: catalogTitle];
+    [[self navigationController] pushViewController:[self mdvc] animated:YES];
 }
 
 @end

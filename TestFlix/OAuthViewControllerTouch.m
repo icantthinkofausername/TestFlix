@@ -144,7 +144,7 @@ static NSString *const kKeychainItemName = @"Testflix";
     NSURL *requestURL = [NSURL URLWithString:[[OAuthStore sharedSingleton] requestURL]];
     NSURL *accessURL = [NSURL URLWithString:[[OAuthStore sharedSingleton] accessURL]];
     NSURL *authorizeURL = [NSURL URLWithString:[[OAuthStore sharedSingleton] authorizeURL]];
-    NSString *scope = [[OAuthStore sharedSingleton] baseURL];
+    NSString *scope = [[OAuthStore sharedSingleton] baseURL];  
     
     GTMOAuthAuthentication *auth = [[OAuthStore sharedSingleton] gtmoAuthAuthentication];
     if (auth == nil) {
@@ -165,7 +165,7 @@ static NSString *const kKeychainItemName = @"Testflix";
         keychainItemName = kKeychainItemName;
     }
     
-    // Display the autentication view.
+    // Display the authentication view.
     GTMOAuthViewControllerTouch *viewController;
     viewController = [[[GTMOAuthViewControllerTouch alloc] initWithScope:scope
                                                                 language:nil
@@ -184,6 +184,7 @@ static NSString *const kKeychainItemName = @"Testflix";
     
     // You can set the title of the navigationItem of the controller here, if you want.
     [[self navController] pushViewController:viewController animated:YES];
+    [self setNavController: nil];
     //[[self navigationController] pushViewController:viewController animated:YES];
 }
 
@@ -232,7 +233,7 @@ static NSString *const kKeychainItemName = @"Testflix";
 
 - (void)doAnAuthenticatedAPIFetch {
     //  status feed
-    NSString *urlStr = @"http://api.twitter.com/1/statuses/home_timeline.json";
+    NSString *urlStr = @"http://api-public.netflix.com/catalog/titles";
     
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -321,7 +322,8 @@ static NSString *const kKeychainItemName = @"Testflix";
 }
 
 - (BOOL)shouldSaveInKeychain {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldSaveInKeychainKey];
+    //return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldSaveInKeychainKey];
+    return YES;
 }
 
 @end

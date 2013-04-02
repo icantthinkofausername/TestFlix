@@ -14,7 +14,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Search:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="9au-K4-Lsf">
-                                <rect key="frame" x="26" y="47" width="76" height="21"/>
+                                <rect key="frame" x="26" y="47" width="59" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -166,7 +166,6 @@
                         <outlet property="movieBoxArtImageView" destination="doJ-Ww-39F" id="32Q-Db-5RM"/>
                         <outlet property="movieSynopsisWebView" destination="zyd-SB-uYa" id="bw2-PN-yMp"/>
                         <outlet property="movieTitleLabel" destination="5FA-so-ljm" id="tYl-5e-XGR"/>
-                        <outlet property="oauthViewControllerTouch" destination="fRh-3x-nb8" id="0g1-QT-fSy"/>
                         <outlet property="playButton" destination="xDZ-eQ-Mjz" id="sJz-cP-ZA5"/>
                         <outlet property="removeDvdButton" destination="t30-JB-qdS" id="vU7-am-rjU"/>
                         <outlet property="removeInstantButton" destination="mWW-fy-rQC" id="YR0-6K-hf6"/>

@@ -13,17 +13,6 @@
 
 @interface MovieDetailViewController ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *movieBoxArtImageView;
-@property (weak, nonatomic) IBOutlet UILabel *movieTitleLabel;
-@property (weak, nonatomic) IBOutlet UITextView *movieSynopsisTextView;
-@property (weak, nonatomic) IBOutlet UIWebView *movieSynopsisWebView;
-@property (weak, nonatomic) IBOutlet UIButton *removeDvdButton;
-@property (weak, nonatomic) IBOutlet UIButton *addDvdButton;
-@property (weak, nonatomic) IBOutlet UIButton *removeInstantButton;
-@property (weak, nonatomic) IBOutlet UIButton *addInstantButton;
-@property (weak, nonatomic) IBOutlet UIButton *playButton;
-@property (strong, nonatomic) IBOutlet OAuthViewControllerTouch *oauthViewControllerTouch;
-
 @end
 
 @implementation MovieDetailViewController
@@ -58,19 +47,26 @@
     return aString;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
 
-    self.movieTitleLabel.numberOfLines = 0;
-    self.movieTitleLabel.text = self.catalogTitle.regularTitle;
-    [self.movieTitleLabel sizeToFit];
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if([self oauthViewControllerTouch] == nil) {
+        [self setOauthViewControllerTouch: [[OAuthViewControllerTouch alloc] init]];
+    }
     
-    self.movieSynopsisTextView.text = self.catalogTitle.synopsis;
+    [[self oauthViewControllerTouch] awakeFromNib];
+
+    [[self movieTitleLabel] setNumberOfLines: 0];
+    [[self movieTitleLabel] setText:[[self catalogTitle] regularTitle]];
+    [self.movieTitleLabel sizeToFit];
+
+    [[self movieSynopsisTextView] setText:[[self catalogTitle] synopsis]];
     [self.movieSynopsisTextView sizeToFit];
     [self.movieSynopsisWebView loadHTMLString: [self stripTagsFrom: self.catalogTitle.synopsis] baseURL:nil];
-
+    UIImageView *movieBoxArtImageView = [self movieBoxArtImageView];
+    
 
    // [self.movieSynopsisWebView loadHTMLString:synopsisText baseURL: nil];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
@@ -79,23 +75,15 @@
             //Maybe correct the frame too
             //[self.view addSubview:imageView];
             UIImage *image = [UIImage imageWithData:imageData];
-            self.movieBoxArtImageView.image = image;
+            [movieBoxArtImageView setImage: image];
         });
     });
     
-    self.movieSynopsisWebView.delegate = self;
+    [[self movieSynopsisWebView] setDelegate: self];
     
-    [self.addInstantButton setHidden: ![self.catalogTitle.instantFormat boolValue]];
-    [self.removeInstantButton setHidden: ![self.catalogTitle.instantFormat boolValue]];
-    [self.playButton setHidden: ![self.catalogTitle.instantFormat boolValue]];
-    
-    //listen for clicks
-    [self.addDvdButton addTarget:self action:@selector(addDvdButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.removeDvdButton addTarget:self action:@selector(removeDvdButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.addInstantButton addTarget:self action:@selector(addInstantButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.removeInstantButton addTarget:self action:@selector(removeInstantButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.playButton addTarget:self action:@selector(playButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-
+    [[self addInstantButton] setHidden: ![[[self catalogTitle] instantFormat] boolValue]];
+    [[self removeInstantButton] setHidden: ![[[self catalogTitle] instantFormat] boolValue]];
+    [[self playButton] setHidden: ![[[self catalogTitle] instantFormat] boolValue]];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -110,8 +98,18 @@
 
 -(void)checkAuthorization
 {
-    self.oauthViewControllerTouch.navController = self.navigationController;
-    [self.oauthViewControllerTouch signIn];
+    // self.oauthViewControllerTouch.navController = self.navigationController;
+    // [self.oauthViewControllerTouch signIn];
+    
+    // OAuthViewControllerTouch *oauthViewControllerTouch = [[OAuthViewControllerTouch alloc] init];
+    
+    // this is hacky, I should just be delegating this
+    [[self oauthViewControllerTouch] setNavController: [self navigationController]];
+    if(![[self oauthViewControllerTouch] isSignedIn]) {
+        [[self oauthViewControllerTouch] signIn];        
+    }
+
+    
    /* if(self.subscriberId == nil)
     {        
         GTMOAuthAuthentication *auth = [GTMOAuthObject sharedSingleton];
@@ -146,29 +144,29 @@
     }*/
 }
 
--(void)addDvdButtonPressed:(id)sender
+-(IBAction)addDvdButtonPressed:(id)sender
 {
     NSLog(@"addDvdButtonPressed Pressed!");
     [self checkAuthorization];
 }
 
--(void)removeDvdButtonPressed:(id)sender
+-(IBAction)removeDvdButtonPressed:(id)sender
 {
     NSLog(@"removeDvdButtonPressed Pressed!");
 }
 
--(void)addInstantButtonPressed:(id)sender
+-(IBAction)addInstantButtonPressed:(id)sender
 {
     NSLog(@"addInstantButtonPressed Pressed!");
 }
 
--(void)removeInstantButtonPressed:(id)sender
+-(IBAction)removeInstantButtonPressed:(id)sender
 {
     NSLog(@"removeInstantButton Pressed!");
 }
 
 
--(void)playButtonPressed:(id)sender {
+-(IBAction)playButtonPressed:(id)sender {
     NSLog(@"playButton Pressed!");
 }
 
@@ -230,7 +228,6 @@
     [self setRemoveInstantButton:nil];
     [self setAddInstantButton:nil];
     [self setPlayButton:nil];
-    [self setOauthViewControllerTouch:nil];
     [super viewDidUnload];
 }
 @end

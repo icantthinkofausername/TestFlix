@@ -80,16 +80,26 @@
 
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects
 {
-    self.catalogTitles = objects;
+    [self setCatalogTitles: objects];
     RKLogInfo(@"Load collection of Articles: %@", objects);
     
-    if(objects.count > 0) {
-        self.catalogTitles = [objects objectAtIndex:0];
-        self.catalogTitles.searchUrl = self.searchUrl;
-        NSLog(@"Number of results is %d", [self.catalogTitles.numberOfResults integerValue]);
+    if([objects count] > 0) {
+        [self setCatalogTitles: [objects objectAtIndex:0]];
+        [[self catalogTitles] setSearchUrl: [self searchUrl]];
+        NSLog(@"Number of results is %d", [[[self catalogTitles] numberOfResults] integerValue]);
+        
+        SearchResultsTableViewController *tableViewController = [[SearchResultsTableViewController alloc] init];
+        [tableViewController setCatalogTitles: [self catalogTitles]];
+        [[self navigationController] pushViewController:tableViewController animated:YES];
     }
     else {
-        self.catalogTitles = nil;
+        [self setCatalogTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Info"
+                                                        message:@"This search returned no results!"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [alert show];
     }
     
     [[self searchField] resignFirstResponder];
@@ -114,7 +124,6 @@
     self.searchUrl = [[NSMutableString alloc] initWithString:@"/catalog/titles?expand=synopsis,formats&term="];
     [self.searchUrl appendString: [self.searchField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [objectManager loadObjectsAtResourcePath:self.searchUrl  delegate:self];
-
     return YES;
 }
 

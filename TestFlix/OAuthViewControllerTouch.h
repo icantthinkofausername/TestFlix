@@ -29,7 +29,7 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *signInOutButton;
 @property (nonatomic, retain) IBOutlet UILabel *emailField;
 @property (nonatomic, retain) IBOutlet UILabel *tokenField;
-@property (nonatomic,strong) UINavigationController *navController;
+@property (nonatomic, strong) UINavigationController *navController;
 
 - (IBAction)signInOutClicked:(id)sender;
 - (IBAction)toggleShouldSaveInKeychain:(id)sender;
