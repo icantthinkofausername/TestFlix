@@ -10,6 +10,7 @@
 #import "NetflixLoginViewController.h"
 #import <RestKit/RestKit.h>
 #import "OAuthViewControllerTouch.h"
+#import "Constants.h"
 
 @interface MovieDetailViewController ()
 
@@ -35,8 +36,20 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oAuthAuthenticationSucceeded:) name:OAuthAuthenticationSucceededNotification object:nil];
     }
     return self;
+}
+
+- (void) oAuthAuthenticationSucceeded:(NSNotification *) notification
+{
+    NSDictionary* userInfo = [notification userInfo];
+    SEL operation = [[userInfo objectForKey: OPERATION_KEY] pointerValue];
+    NSLog (@"Successfully received the auth notification!");
+    
+    if([self respondsToSelector:operation]) {
+        [self performSelector:operation withObject: nil];
+    }
 }
 
 -(NSString *) stripTagsFrom:(NSString *)aString
@@ -46,7 +59,6 @@
         aString = [aString stringByReplacingCharactersInRange:r withString:@""];
     return aString;
 }
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -96,17 +108,17 @@
     }
 }
 
--(void)checkAuthorization
+-(void)checkAuthorizationForOperation:(SEL) currentOperation
 {
     // self.oauthViewControllerTouch.navController = self.navigationController;
     // [self.oauthViewControllerTouch signIn];
     
     // OAuthViewControllerTouch *oauthViewControllerTouch = [[OAuthViewControllerTouch alloc] init];
     
-    // this is hacky, I should just be delegating this
+    // this is hacky, I should just be delegating this as a controller that inherits an object. It doesnt need to be a view controller
     [[self oauthViewControllerTouch] setNavController: [self navigationController]];
     if(![[self oauthViewControllerTouch] isSignedIn]) {
-        [[self oauthViewControllerTouch] signIn];        
+        [[self oauthViewControllerTouch] signInForOperation:currentOperation];
     }
 
     
@@ -147,7 +159,7 @@
 -(IBAction)addDvdButtonPressed:(id)sender
 {
     NSLog(@"addDvdButtonPressed Pressed!");
-    [self checkAuthorization];
+    [self checkAuthorizationForOperation:@selector(addDvdButtonPressed:)];
 }
 
 -(IBAction)removeDvdButtonPressed:(id)sender

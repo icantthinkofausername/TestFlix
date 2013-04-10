@@ -10,4 +10,8 @@
 
 @interface Constants : NSObject
 
+FOUNDATION_EXPORT NSString *const OAuthAuthenticationSucceededNotification;
+FOUNDATION_EXPORT NSString *const OPERATION_KEY;
+
+
 @end

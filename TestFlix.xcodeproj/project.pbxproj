@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03289B6716F7FBE300AFCC64 /* OAuthSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03289B6616F7FBE300AFCC64 /* OAuthSettings.plist */; };
 		033B071116A23B13000F2090 /* OAuthStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 033B071016A23B13000F2090 /* OAuthStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0341FB7F170BBD2D0009BB8C /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 0341FB7E170BBD2D0009BB8C /* Constants.m */; };
 		0345820E1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345820B1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m */; };
 		0345820F1642249600A7E4CE /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345820D1642249600A7E4CE /* UIScrollView+SVPullToRefresh.m */; };
 		03639B2A16A1C28100B367CA /* OAuthViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 03639B2916A1C28100B367CA /* OAuthViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -139,6 +140,8 @@
 		03289B6616F7FBE300AFCC64 /* OAuthSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = OAuthSettings.plist; sourceTree = "<group>"; };
 		033B070F16A23B13000F2090 /* OAuthStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthStore.h; sourceTree = "<group>"; };
 		033B071016A23B13000F2090 /* OAuthStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthStore.m; sourceTree = "<group>"; };
+		0341FB7D170BBD2D0009BB8C /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		0341FB7E170BBD2D0009BB8C /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		034582091642249600A7E4CE /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
 		0345820A1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
 		0345820B1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
@@ -320,6 +323,8 @@
 				0384B3E9165C80D20036328E /* Link.m */,
 				0384B3EB165C80E50036328E /* Category.h */,
 				0384B3EC165C80E50036328E /* Category.m */,
+				0341FB7D170BBD2D0009BB8C /* Constants.h */,
+				0341FB7E170BBD2D0009BB8C /* Constants.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -706,6 +711,7 @@
 				03C213E916A30F09000DBB02 /* GTMMIMEDocument.m in Sources */,
 				03C213EB16A30F09000DBB02 /* GTMReadMonitorInputStream.m in Sources */,
 				03C213F116A30F09000DBB02 /* GTMOAuthViewControllerTouch.m in Sources */,
+				0341FB7F170BBD2D0009BB8C /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

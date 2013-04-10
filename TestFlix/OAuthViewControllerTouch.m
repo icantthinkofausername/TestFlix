@@ -17,6 +17,7 @@
 #import "OAuthStore.h"
 #import "GTMOAuthAuthentication.h"
 #import "GTMOAuthViewControllerTouch.h"
+#import "Constants.h"
 #import <RestKit/RestKit.h>
 
 static NSString *const kShouldSaveInKeychainKey = @"shouldSaveInKeychain";
@@ -42,6 +43,7 @@ static NSString *const kKeychainItemName = @"Testflix";
 @synthesize emailField = mEmailField;
 @synthesize tokenField = mTokenField;
 @synthesize navController = _navController;
+@synthesize mCurrentOperation = _mCurrentOperation;
 
 - (void)viewDidLoad
 {
@@ -137,6 +139,11 @@ static NSString *const kKeychainItemName = @"Testflix";
     [self updateUI];
 }
 
+- (void)signInForOperation:(SEL)theOperation {
+    [self setMCurrentOperation:theOperation];
+    [self signIn];
+}
+
 - (void)signIn {
     
     [self signOut];
@@ -221,11 +228,18 @@ static NSString *const kKeychainItemName = @"Testflix";
         
         // Just to prove we're signed in, we'll attempt an authenticated fetch for the
         // signed-in user
-        [self doAnAuthenticatedAPIFetch];
+        //[self doAnAuthenticatedAPIFetch];
         
         RKObjectManager *objectManager = [RKObjectManager sharedManager];
         objectManager.client.OAuth1AccessToken= auth.accessToken;
         objectManager.client.OAuth1AccessTokenSecret = auth.tokenSecret;
+        
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
+        [userInfo setObject: [NSValue valueWithPointer:[self mCurrentOperation]] forKey:OPERATION_KEY];
+        
+        NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+        [nc postNotificationName:OAuthAuthenticationSucceededNotification object:self userInfo:userInfo];
+        
     }
     
     [self updateUI];
@@ -239,6 +253,10 @@ static NSString *const kKeychainItemName = @"Testflix";
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [mAuth authorizeRequest:request];
     
+    GTMHTTPFetcher* myFetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [myFetcher beginFetchWithDelegate:self
+                    didFinishSelector:@selector(authenticatedFetcher:finishedWithData:error:)];
+    
     // Note that for a request with a body, such as a POST or PUT request, the
     // library will include the body data when signing only if the request has
     // the proper content type header:
@@ -249,14 +267,21 @@ static NSString *const kKeychainItemName = @"Testflix";
     // Synchronous fetches like this are a really bad idea in Cocoa applications
     //
     // For a very easy async alternative, we could use GTMHTTPFetcher
-    NSError *error = nil;
+    /*NSError *error = nil;
     NSURLResponse *response = nil;
     NSData *data = [NSURLConnection sendSynchronousRequest:request
                                          returningResponse:&response
-                                                     error:&error];
-    if (data) {
+                                                     error:&error];*/
+
+}
+
+- (void)authenticatedFetcher:(GTMHTTPFetcher *)fetcher
+ finishedWithData:(NSData *)retrievedData
+            error:(NSError *)error {
+    // if error is not nil, the fetch succeeded
+    if (retrievedData) {
         // API fetch succeeded
-        NSString *str = [[[NSString alloc] initWithData:data
+        NSString *str = [[[NSString alloc] initWithData:retrievedData
                                                encoding:NSUTF8StringEncoding] autorelease];
         NSLog(@"API response: %@", str);
     } else {
@@ -323,7 +348,7 @@ static NSString *const kKeychainItemName = @"Testflix";
 
 - (BOOL)shouldSaveInKeychain {
     //return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldSaveInKeychainKey];
-    return YES;
+    return NO;
 }
 
 @end

@@ -10,4 +10,7 @@
 
 @implementation Constants
 
+NSString *const OAuthAuthenticationSucceededNotification = @"OAuthAuthenticationSucceededNotification";
+NSString *const OPERATION_KEY = @"OPERATION_KEY";
+
 @end

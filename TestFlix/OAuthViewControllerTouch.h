@@ -30,16 +30,21 @@
 @property (nonatomic, retain) IBOutlet UILabel *emailField;
 @property (nonatomic, retain) IBOutlet UILabel *tokenField;
 @property (nonatomic, strong) UINavigationController *navController;
+@property (nonatomic, assign)  SEL mCurrentOperation;
 
 - (IBAction)signInOutClicked:(id)sender;
 - (IBAction)toggleShouldSaveInKeychain:(id)sender;
 
 - (void)signIn;
+- (void)signInForOperation:(SEL)theOperation;
 - (void)signOut;
 - (BOOL)isSignedIn;
 
 - (void)updateUI;
 
 - (void)setAuthentication:(GTMOAuthAuthentication *)auth;
+
+- (void)setCurrentOperation:(SEL)currentOperation;
+
 
 @end
