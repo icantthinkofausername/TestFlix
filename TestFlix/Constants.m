@@ -11,6 +11,9 @@
 @implementation Constants
 
 NSString *const OAuthAuthenticationSucceededNotification = @"OAuthAuthenticationSucceededNotification";
+NSString *const AsynchronousAuthenticatedAPIFetchStartedNotification = @"AsynchronousAuthenticatedAPIFetchStartedNotification";
+NSString *const AsynchronousAuthenticatedAPIFetchStoppedNotification = @"AsynchronousAuthenticatedAPIFetchStoppedNotification";
+
 NSString *const OPERATION_KEY = @"OPERATION_KEY";
 
 @end

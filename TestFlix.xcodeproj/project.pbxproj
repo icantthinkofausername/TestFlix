@@ -285,8 +285,8 @@
 		03B473AF161A86EC001B3EAE /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
-				03D0FE7A15FD92720051D36A /* AppDelegate.m */,
 				03D0FE7915FD92720051D36A /* AppDelegate.h */,
+				03D0FE7A15FD92720051D36A /* AppDelegate.m */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";

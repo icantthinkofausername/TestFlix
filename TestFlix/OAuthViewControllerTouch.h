@@ -43,8 +43,11 @@
 - (void)updateUI;
 
 - (void)setAuthentication:(GTMOAuthAuthentication *)auth;
-
 - (void)setCurrentOperation:(SEL)currentOperation;
+- (void)doAsynchronousAuthenticatedAPIFetchAt:(NSURL *)theUrl
+                               withHTTPMethod: (NSString *) httpMethod;
+- (NSData *)doSynchronousAuthenticatedAPIFetchAt:(NSURL *)theUrl
+                                  withHTTPMethod: (NSString *) httpMethod;
 
 
 @end

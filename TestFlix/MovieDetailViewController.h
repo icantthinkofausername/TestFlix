@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *removeInstantButton;
 @property (weak, nonatomic) IBOutlet UIButton *addInstantButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) CatalogTitle *catalogTitle;
 @property (nonatomic, strong) OAuthViewControllerTouch *oauthViewControllerTouch;
 

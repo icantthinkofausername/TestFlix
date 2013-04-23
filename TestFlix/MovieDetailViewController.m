@@ -11,6 +11,7 @@
 #import <RestKit/RestKit.h>
 #import "OAuthViewControllerTouch.h"
 #import "Constants.h"
+#import "OAuthStore.h"
 
 @interface MovieDetailViewController ()
 
@@ -29,6 +30,7 @@
 @synthesize addInstantButton = _addInstantButton;
 @synthesize playButton = _playButton;
 @synthesize oauthViewControllerTouch = _oauthViewControllerTouch;
+@synthesize activityIndicator = _activityIndicator;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -37,8 +39,20 @@
     if (self) {
         // Custom initialization
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oAuthAuthenticationSucceeded:) name:OAuthAuthenticationSucceededNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkActivityStarted:) name:AsynchronousAuthenticatedAPIFetchStartedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkActivityStopped:) name:AsynchronousAuthenticatedAPIFetchStoppedNotification object:nil];
+
     }
     return self;
+}
+
+- (void)networkActivityStarted:(NSNotification *)notify {
+    [[self activityIndicator] startAnimating];
+}
+
+- (void)networkActivityStopped:(NSNotification *)notify {
+    [[self activityIndicator] stopAnimating];
+    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (void) oAuthAuthenticationSucceeded:(NSNotification *) notification
@@ -108,7 +122,7 @@
     }
 }
 
--(void)checkAuthorizationForOperation:(SEL) currentOperation
+-(BOOL)checkAuthorizationForOperation:(SEL) currentOperation
 {
     // self.oauthViewControllerTouch.navController = self.navigationController;
     // [self.oauthViewControllerTouch signIn];
@@ -119,6 +133,10 @@
     [[self oauthViewControllerTouch] setNavController: [self navigationController]];
     if(![[self oauthViewControllerTouch] isSignedIn]) {
         [[self oauthViewControllerTouch] signInForOperation:currentOperation];
+        return NO;
+    }
+    else {
+        return YES;
     }
 
     
@@ -156,25 +174,82 @@
     }*/
 }
 
+-(NSString *) getCurrentUser
+{
+    NSURL *myURL = [NSURL URLWithString:@"http://api-public.netflix.com/users/current"];
+    NSData *data = [[self oauthViewControllerTouch] doSynchronousAuthenticatedAPIFetchAt:myURL withHTTPMethod: @"GET"];
+    NSString *currentUserStr = nil;
+    
+    if (data) {
+        // API fetch succeeded
+        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSScanner *scanner = [NSScanner scannerWithString:dataStr];
+        [scanner scanUpToString:@"/users/" intoString:nil]; // Scan all characters before #
+        [scanner scanString:@"/users/" intoString:nil]; // Scan the # character
+        [scanner scanUpToString:@"\" rel=" intoString:&currentUserStr];
+    }
+    
+    return currentUserStr;
+}
+
 -(IBAction)addDvdButtonPressed:(id)sender
 {
     NSLog(@"addDvdButtonPressed Pressed!");
-    [self checkAuthorizationForOperation:@selector(addDvdButtonPressed:)];
+    if([self checkAuthorizationForOperation:@selector(addDvdButtonPressed:)]) {
+
+        NSString *currentUserStr = [self getCurrentUser];
+        NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"http://api-public.netflix.com/users/"];
+        [queueStrUrl appendString:currentUserStr];
+        [queueStrUrl appendString:@"/queues/disc?title_ref="];
+        [queueStrUrl appendString: [[[[self catalogTitle] titleIdUrl] absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ];
+
+        [[self oauthViewControllerTouch] doAsynchronousAuthenticatedAPIFetchAt:[NSURL URLWithString: queueStrUrl] withHTTPMethod: @"POST"];
+    }
 }
 
 -(IBAction)removeDvdButtonPressed:(id)sender
 {
     NSLog(@"removeDvdButtonPressed Pressed!");
+    if([self checkAuthorizationForOperation:@selector(removeDvdButtonPressed:)]) {
+        
+        NSString *currentUserStr = [self getCurrentUser];
+        NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"http://api-public.netflix.com/users/"];
+        [queueStrUrl appendString:currentUserStr];
+        [queueStrUrl appendString:@"/queues/disc/available/"];
+        [queueStrUrl appendString: [[[[self catalogTitle] titleIdUrl] lastPathComponent] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ];
+        
+        [[self oauthViewControllerTouch] doAsynchronousAuthenticatedAPIFetchAt:[NSURL URLWithString: queueStrUrl] withHTTPMethod: @"DELETE"];
+    }
 }
 
 -(IBAction)addInstantButtonPressed:(id)sender
 {
     NSLog(@"addInstantButtonPressed Pressed!");
+    if([self checkAuthorizationForOperation:@selector(addDvdButtonPressed:)]) {
+        
+        NSString *currentUserStr = [self getCurrentUser];
+        NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"http://api-public.netflix.com/users/"];
+        [queueStrUrl appendString:currentUserStr];
+        [queueStrUrl appendString:@"/queues/instant?title_ref="];
+        [queueStrUrl appendString: [[[[self catalogTitle] titleIdUrl] absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ];
+        
+        [[self oauthViewControllerTouch] doAsynchronousAuthenticatedAPIFetchAt:[NSURL URLWithString: queueStrUrl] withHTTPMethod: @"POST"];
+    }
 }
 
 -(IBAction)removeInstantButtonPressed:(id)sender
 {
     NSLog(@"removeInstantButton Pressed!");
+    if([self checkAuthorizationForOperation:@selector(removeDvdButtonPressed:)]) {
+        
+        NSString *currentUserStr = [self getCurrentUser];
+        NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"http://api-public.netflix.com/users/"];
+        [queueStrUrl appendString:currentUserStr];
+        [queueStrUrl appendString:@"/queues/instant/available/"];
+        [queueStrUrl appendString: [[[[self catalogTitle] titleIdUrl] lastPathComponent] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ];
+        
+        [[self oauthViewControllerTouch] doAsynchronousAuthenticatedAPIFetchAt:[NSURL URLWithString: queueStrUrl] withHTTPMethod: @"DELETE"];
+    }
 }
 
 
@@ -240,6 +315,7 @@
     [self setRemoveInstantButton:nil];
     [self setAddInstantButton:nil];
     [self setPlayButton:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
 }
 @end

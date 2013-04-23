@@ -121,8 +121,8 @@
 {
     //[[self searchField] resignFirstResponder];
     RKObjectManager *objectManager = [RKObjectManager sharedManager];
-    self.searchUrl = [[NSMutableString alloc] initWithString:@"/catalog/titles?expand=synopsis,formats&term="];
-    [self.searchUrl appendString: [self.searchField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [self setSearchUrl: [[NSMutableString alloc] initWithString:@"/catalog/titles?expand=synopsis,formats&term="]];
+    [[self searchUrl] appendString: [self.searchField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [objectManager loadObjectsAtResourcePath:self.searchUrl  delegate:self];
     return YES;
 }

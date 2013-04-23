@@ -58,6 +58,7 @@ static NSString *const kKeychainItemName = @"Testflix";
     [nc addObserver:self selector:@selector(signInNetworkLostOrFound:) name:kGTMOAuthNetworkLost  object:nil];
     [nc addObserver:self selector:@selector(signInNetworkLostOrFound:) name:kGTMOAuthNetworkFound object:nil];
     
+    
     // Get the saved authentication, if any, from the keychain.
     //
     // The view controller supports methods for saving and restoring
@@ -231,8 +232,8 @@ static NSString *const kKeychainItemName = @"Testflix";
         //[self doAnAuthenticatedAPIFetch];
         
         RKObjectManager *objectManager = [RKObjectManager sharedManager];
-        objectManager.client.OAuth1AccessToken= auth.accessToken;
-        objectManager.client.OAuth1AccessTokenSecret = auth.tokenSecret;
+        [[objectManager client] setOAuth1AccessToken:[auth accessToken]];
+        [[objectManager client] setOAuth1AccessTokenSecret: [auth tokenSecret]];
         
         NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
         [userInfo setObject: [NSValue valueWithPointer:[self mCurrentOperation]] forKey:OPERATION_KEY];
@@ -245,12 +246,16 @@ static NSString *const kKeychainItemName = @"Testflix";
     [self updateUI];
 }
 
-- (void)doAnAuthenticatedAPIFetch {
+
+- (void)doAsynchronousAuthenticatedAPIFetchAt:(NSURL *)theUrl
+                               withHTTPMethod:(NSString *) httpMethod {
     //  status feed
-    NSString *urlStr = @"http://api-public.netflix.com/catalog/titles";
+    //NSString *urlStr = @"http://api-public.netflix.com/catalog/titles";
+    [[NSNotificationCenter defaultCenter] postNotificationName:AsynchronousAuthenticatedAPIFetchStartedNotification object:self];
     
-    NSURL *url = [NSURL URLWithString:urlStr];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    //NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:theUrl];
+    [request setHTTPMethod: httpMethod];
     [mAuth authorizeRequest:request];
     
     GTMHTTPFetcher* myFetcher = [GTMHTTPFetcher fetcherWithRequest:request];
@@ -274,10 +279,55 @@ static NSString *const kKeychainItemName = @"Testflix";
                                                      error:&error];*/
 
 }
+    
+- (NSData *)doSynchronousAuthenticatedAPIFetchAt:(NSURL *)theUrl
+                                  withHTTPMethod: (NSString *) httpMethod
+
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:theUrl];
+    [request setHTTPMethod: httpMethod];
+    [mAuth authorizeRequest:request];
+    
+    // Note that for a request with a body, such as a POST or PUT request, the
+    // library will include the body data when signing only if the request has
+    // the proper content type header:
+    //
+    //   [request setValue:@"application/x-www-form-urlencoded"
+    //  forHTTPHeaderField:@"Content-Type"];
+    
+    // Synchronous fetches like this are a really bad idea in Cocoa applications
+    //
+    // For a very easy async alternative, we could use GTMHTTPFetcher
+    NSError *error = nil;
+    NSURLResponse *response = nil;
+    NSData *data = [NSURLConnection sendSynchronousRequest:request
+    returningResponse:&response
+    error:&error];
+    
+    if (data) {
+        // API fetch succeeded
+        NSString *str = [[[NSString alloc] initWithData:data
+                                               encoding:NSUTF8StringEncoding] autorelease];
+        NSLog(@"API response: %@", str);
+    } else {
+        // fetch failed
+        NSLog(@"API fetch error: %@", error);
+    }
+    
+    return data;
+    
+}
 
 - (void)authenticatedFetcher:(GTMHTTPFetcher *)fetcher
  finishedWithData:(NSData *)retrievedData
             error:(NSError *)error {
+    
+    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+    [userInfo setObject: error forKey:@"error"];
+    [userInfo setObject: retrievedData forKey:@"data"];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:AsynchronousAuthenticatedAPIFetchStoppedNotification object:self userInfo:userInfo];
+    
     // if error is not nil, the fetch succeeded
     if (retrievedData) {
         // API fetch succeeded

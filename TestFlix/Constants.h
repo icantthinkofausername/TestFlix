@@ -11,6 +11,8 @@
 @interface Constants : NSObject
 
 FOUNDATION_EXPORT NSString *const OAuthAuthenticationSucceededNotification;
+FOUNDATION_EXPORT NSString *const AsynchronousAuthenticatedAPIFetchStartedNotification;
+FOUNDATION_EXPORT NSString *const AsynchronousAuthenticatedAPIFetchStoppedNotification;
 FOUNDATION_EXPORT NSString *const OPERATION_KEY;
 
 
