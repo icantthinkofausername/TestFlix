@@ -13,6 +13,8 @@
 #import "Category.h"
 #import "OAuthStore.h"
 #import "SearchMovieViewController.h"
+#import "InstantQueueTableViewController.h"
+#import "DvdQueueTableViewController.h"
 #import <RestKit/RestKit.h>
 
 @implementation AppDelegate
@@ -46,8 +48,28 @@
     
     // Override point for customization after application launch.
     SearchMovieViewController *smvc = [[SearchMovieViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: smvc];
-    [[self window] setRootViewController:navigationController];
+    UINavigationController *searchNavigationController = [[UINavigationController alloc] initWithRootViewController: smvc];
+    [searchNavigationController setTabBarItem: [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemSearch tag:0]];
+
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    
+    //UIViewController *viewController2 = [[UIViewController alloc] init];
+    //[viewController2 setTabBarItem: [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFavorites tag:0]];
+    //[[viewController2 tabBarItem] setTitle: @"Queue"];
+    
+    UINavigationController *instantQueueNavigationController = [[UINavigationController alloc] initWithRootViewController:[[InstantQueueTableViewController alloc] init]];
+    UITabBarItem *instantQueueTabBarItem = [[UITabBarItem alloc] initWithTitle:@"Instant Queue" image:[UIImage imageNamed:@"queue.png"] tag:1];
+    [instantQueueNavigationController setTabBarItem: instantQueueTabBarItem];
+
+    UINavigationController *dvdQueueNavigationController = [[UINavigationController alloc] initWithRootViewController:[[DvdQueueTableViewController alloc] init]];
+    UITabBarItem *dvdQueueTabBarItem = [[UITabBarItem alloc] initWithTitle:@"DVD Queue" image:[UIImage imageNamed:@"queue.png"] tag:1];
+    [dvdQueueNavigationController setTabBarItem: dvdQueueTabBarItem];
+    
+    NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithObjects:searchNavigationController, instantQueueNavigationController, dvdQueueNavigationController, nil];
+    [tabBarController setViewControllers:viewControllers];
+    [[self window] setRootViewController:tabBarController];
+
+ //   [[self window] setRootViewController:navigationController];
     
     OAuthStore *auth = [OAuthStore sharedSingleton];
     RKObjectManager *objectManager = [RKObjectManager managerWithBaseURLString:[auth baseURL]];

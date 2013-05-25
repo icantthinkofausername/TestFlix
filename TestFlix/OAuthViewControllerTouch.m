@@ -24,7 +24,7 @@ static NSString *const kShouldSaveInKeychainKey = @"shouldSaveInKeychain";
 static NSString *const kKeychainItemName = @"Testflix";
 
 
-@interface OAuthViewControllerTouch()
+@interface OAuthViewControllerTouch() <RKRequestDelegate, RKObjectLoaderDelegate>
 - (void)viewController:(GTMOAuthViewControllerTouch *)viewController
       finishedWithAuth:(GTMOAuthAuthentication *)auth
                  error:(NSError *)error;
@@ -44,14 +44,18 @@ static NSString *const kKeychainItemName = @"Testflix";
 @synthesize tokenField = mTokenField;
 @synthesize navController = _navController;
 @synthesize mCurrentOperation = _mCurrentOperation;
+@synthesize currentOperationController = _currentOperationController;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+
 }
 
 - (void)awakeFromNib {
+    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(incrementNetworkActivity:) name:kGTMOAuthFetchStarted object:nil];
     [nc addObserver:self selector:@selector(decrementNetworkActivity:) name:kGTMOAuthFetchStopped object:nil];
@@ -108,6 +112,166 @@ static NSString *const kKeychainItemName = @"Testflix";
     return [super shouldAutorotateToInterfaceOrientation:orientation];
 }
 
+- (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects
+{
+    RKLogInfo(@"Load collection of Articles: %@", objects);
+    [self awakeFromNib];
+    
+    
+}
+
+- (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error
+{
+    NSLog(@"Encountered an error: %@", error);
+    /* open an alert with an OK button */
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:@"There seems to be a problem connecting to netflix!"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles: nil];
+    [alert show];
+}
+
+-(BOOL)checkAuthorizationForOperation:(SEL) currentOperation
+                            forOperationController: (id) operationController
+                    withNavController: (UINavigationController *) navigationController
+{
+    
+    // self.oauthViewControllerTouch.navController = self.navigationController;
+    // [self.oauthViewControllerTouch signIn];
+    
+    // OAuthViewControllerTouch *oauthViewControllerTouch = [[OAuthViewControllerTouch alloc] init];
+    
+    // this is hacky, I should just be delegating this as a controller that inherits an object. It doesnt need to be a view controller
+    
+ 
+    /*GTMOAuthAuthentication *auth = [[OAuthStore sharedSingleton] gtmoAuthAuthentication];
+    
+    if(auth && [auth tokenSecret] == nil) {
+        
+        
+        
+        RKObjectManager *objectManager = [RKObjectManager sharedManager];
+
+        [objectManager loadObjectsAtResourcePath:@"/catalog/titles" usingBlock:
+         ^(RKObjectLoader* loader) {
+             
+             loader.onDidLoadResponse = ^(RKResponse *response) {
+                 NSLog(@"Response: \n%@", [response bodyAsString]);
+                 
+             };
+             
+             loader.onDidLoadObjects = ^(NSArray *objects) {
+                 if(![self isSignedIn]) {
+                     [self signInForOperation:currentOperation];
+                 }
+             };
+             
+             loader.onDidFailWithError = ^(NSError *error) {
+                 NSLog(@"Encountered an error: %@", error);
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                 message:@"There seems to be a problem connecting to netflix!"
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles: nil];
+                 [alert show];
+             };
+         }];
+        
+        return NO;
+    }
+    else {
+
+    }*/
+    
+
+    
+    if(![self isSignedIn]) {
+        [self setNavController: navigationController];
+        
+        // we have to do a request before sign in so that the shared object gets the token secret;
+        // there has to be a better way
+        RKObjectManager *objectManager = [RKObjectManager sharedManager];
+        [objectManager loadObjectsAtResourcePath:@"/catalog/titles" usingBlock:
+         ^(RKObjectLoader* loader) {
+             
+             loader.onDidLoadResponse = ^(RKResponse *response) {
+                 NSLog(@"Response: \n%@", [response bodyAsString]);
+                 
+             };
+             
+             loader.onDidLoadObjects = ^(NSArray *objects) {
+                 [self signInForOperation:currentOperation forOperationController: operationController];
+             };
+             
+             loader.onDidFailWithError = ^(NSError *error) {
+                 NSLog(@"Encountered an error: %@", error);
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                 message:@"There seems to be a problem connecting to netflix!"
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles: nil];
+                 [alert show];
+             };
+         }];
+        return NO;
+    }
+    else {
+        return YES;
+    }
+    
+    /* if(self.subscriberId == nil)
+     {
+     GTMOAuthAuthentication *auth = [GTMOAuthObject sharedSingleton];
+     NSURL *requestURL = [NSURL URLWithString:@"http://api-public.netflix.com/oauth/request_token"];
+     NSURL *accessURL = [NSURL URLWithString:@"http://api-public.netflix.com/oauth/access_token"];
+     NSURL *authorizeURL = [NSURL URLWithString:@"http://api-user.netflix.com/oauth/login"];
+     NSString *scope = @"http://api-public.netflix.com";
+     
+     
+     // set the callback URL to which the site should redirect, and for which
+     // the OAuth controller should look to determine when sign-in has
+     // finished or been canceled
+     //
+     // This URL does not need to be for an actual web page
+     [auth setCallback:@"testflix://goBack"];
+     
+     // Display the autentication view
+     GTMOAuthViewControllerTouch *viewController;
+     viewController = [[GTMOAuthViewControllerTouch alloc] initWithScope:scope
+     language:nil
+     requestTokenURL:requestURL
+     authorizeTokenURL:authorizeURL
+     accessTokenURL:accessURL
+     authentication:auth
+     appServiceName:@"My App: Custom Service"
+     delegate:self
+     finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+     
+     
+     [self.navigationController pushViewController:viewController animated:YES];
+     // [self performSegueWithIdentifier: @"NetflixLoginViewControllerSegue" sender: self];
+     }*/
+}
+
+-(NSString *) getCurrentUser
+{
+    NSURL *myURL = [NSURL URLWithString:@"http://api-public.netflix.com/users/current"];
+    NSData *data = [self doSynchronousAuthenticatedAPIFetchAt:myURL withHTTPMethod: @"GET"];
+    NSString *currentUserStr = nil;
+    
+    if (data) {
+        // API fetch succeeded
+        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSScanner *scanner = [NSScanner scannerWithString:dataStr];
+        [scanner scanUpToString:@"/users/" intoString:nil]; // Scan all characters before #
+        [scanner scanString:@"/users/" intoString:nil]; // Scan the # character
+        [scanner scanUpToString:@"\" rel=" intoString:&currentUserStr];
+    }
+    
+    return currentUserStr;
+}
+
 - (BOOL)isSignedIn {
     BOOL isSignedIn = [mAuth canAuthorize];
     return isSignedIn;
@@ -140,8 +304,9 @@ static NSString *const kKeychainItemName = @"Testflix";
     [self updateUI];
 }
 
-- (void)signInForOperation:(SEL)theOperation {
+- (void)signInForOperation:(SEL)theOperation forOperationController:(id) operationController {
     [self setMCurrentOperation:theOperation];
+    [self setCurrentOperationController: operationController];
     [self signIn];
 }
 
@@ -240,6 +405,10 @@ static NSString *const kKeychainItemName = @"Testflix";
         
         NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
         [nc postNotificationName:OAuthAuthenticationSucceededNotification object:self userInfo:userInfo];
+        
+        if([[self currentOperationController] respondsToSelector:[self mCurrentOperation]]) {
+            [[self currentOperationController]  performSelector:[self mCurrentOperation] withObject: nil];
+        }
         
     }
     

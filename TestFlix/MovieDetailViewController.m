@@ -62,7 +62,7 @@
     NSLog (@"Successfully received the auth notification!");
     
     if([self respondsToSelector:operation]) {
-        [self performSelector:operation withObject: nil];
+        //[self performSelector:operation withObject: nil];
     }
 }
 
@@ -122,82 +122,12 @@
     }
 }
 
--(BOOL)checkAuthorizationForOperation:(SEL) currentOperation
-{
-    // self.oauthViewControllerTouch.navController = self.navigationController;
-    // [self.oauthViewControllerTouch signIn];
-    
-    // OAuthViewControllerTouch *oauthViewControllerTouch = [[OAuthViewControllerTouch alloc] init];
-    
-    // this is hacky, I should just be delegating this as a controller that inherits an object. It doesnt need to be a view controller
-    [[self oauthViewControllerTouch] setNavController: [self navigationController]];
-    if(![[self oauthViewControllerTouch] isSignedIn]) {
-        [[self oauthViewControllerTouch] signInForOperation:currentOperation];
-        return NO;
-    }
-    else {
-        return YES;
-    }
-
-    
-   /* if(self.subscriberId == nil)
-    {        
-        GTMOAuthAuthentication *auth = [GTMOAuthObject sharedSingleton];
-        NSURL *requestURL = [NSURL URLWithString:@"http://api-public.netflix.com/oauth/request_token"];
-        NSURL *accessURL = [NSURL URLWithString:@"http://api-public.netflix.com/oauth/access_token"];
-        NSURL *authorizeURL = [NSURL URLWithString:@"http://api-user.netflix.com/oauth/login"];
-        NSString *scope = @"http://api-public.netflix.com";
-        
-        
-        // set the callback URL to which the site should redirect, and for which
-        // the OAuth controller should look to determine when sign-in has
-        // finished or been canceled
-        //
-        // This URL does not need to be for an actual web page
-        [auth setCallback:@"testflix://goBack"];
-        
-        // Display the autentication view
-        GTMOAuthViewControllerTouch *viewController;
-        viewController = [[GTMOAuthViewControllerTouch alloc] initWithScope:scope
-                                                                   language:nil
-                                                            requestTokenURL:requestURL
-                                                          authorizeTokenURL:authorizeURL
-                                                             accessTokenURL:accessURL
-                                                             authentication:auth
-                                                             appServiceName:@"My App: Custom Service"
-                                                                   delegate:self
-                                                           finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-        
-        
-        [self.navigationController pushViewController:viewController animated:YES];
-       // [self performSegueWithIdentifier: @"NetflixLoginViewControllerSegue" sender: self];
-    }*/
-}
-
--(NSString *) getCurrentUser
-{
-    NSURL *myURL = [NSURL URLWithString:@"http://api-public.netflix.com/users/current"];
-    NSData *data = [[self oauthViewControllerTouch] doSynchronousAuthenticatedAPIFetchAt:myURL withHTTPMethod: @"GET"];
-    NSString *currentUserStr = nil;
-    
-    if (data) {
-        // API fetch succeeded
-        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSScanner *scanner = [NSScanner scannerWithString:dataStr];
-        [scanner scanUpToString:@"/users/" intoString:nil]; // Scan all characters before #
-        [scanner scanString:@"/users/" intoString:nil]; // Scan the # character
-        [scanner scanUpToString:@"\" rel=" intoString:&currentUserStr];
-    }
-    
-    return currentUserStr;
-}
-
 -(IBAction)addDvdButtonPressed:(id)sender
 {
     NSLog(@"addDvdButtonPressed Pressed!");
-    if([self checkAuthorizationForOperation:@selector(addDvdButtonPressed:)]) {
+    if([[self oauthViewControllerTouch]checkAuthorizationForOperation:@selector(addDvdButtonPressed:) forOperationController: self withNavController:[self navigationController]]) {
 
-        NSString *currentUserStr = [self getCurrentUser];
+        NSString *currentUserStr = [[self oauthViewControllerTouch ]getCurrentUser];
         NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"http://api-public.netflix.com/users/"];
         [queueStrUrl appendString:currentUserStr];
         [queueStrUrl appendString:@"/queues/disc?title_ref="];
@@ -210,9 +140,9 @@
 -(IBAction)removeDvdButtonPressed:(id)sender
 {
     NSLog(@"removeDvdButtonPressed Pressed!");
-    if([self checkAuthorizationForOperation:@selector(removeDvdButtonPressed:)]) {
+    if([[self oauthViewControllerTouch ]checkAuthorizationForOperation:@selector(removeDvdButtonPressed:) forOperationController: self withNavController: [self navigationController]]) {
         
-        NSString *currentUserStr = [self getCurrentUser];
+        NSString *currentUserStr = [[self oauthViewControllerTouch]getCurrentUser];
         NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"http://api-public.netflix.com/users/"];
         [queueStrUrl appendString:currentUserStr];
         [queueStrUrl appendString:@"/queues/disc/available/"];
@@ -225,9 +155,9 @@
 -(IBAction)addInstantButtonPressed:(id)sender
 {
     NSLog(@"addInstantButtonPressed Pressed!");
-    if([self checkAuthorizationForOperation:@selector(addDvdButtonPressed:)]) {
+    if([[self oauthViewControllerTouch] checkAuthorizationForOperation:@selector(addInstantButtonPressed:) forOperationController: self withNavController: [self navigationController]]) {
         
-        NSString *currentUserStr = [self getCurrentUser];
+        NSString *currentUserStr = [[self oauthViewControllerTouch] getCurrentUser];
         NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"http://api-public.netflix.com/users/"];
         [queueStrUrl appendString:currentUserStr];
         [queueStrUrl appendString:@"/queues/instant?title_ref="];
@@ -240,9 +170,9 @@
 -(IBAction)removeInstantButtonPressed:(id)sender
 {
     NSLog(@"removeInstantButton Pressed!");
-    if([self checkAuthorizationForOperation:@selector(removeDvdButtonPressed:)]) {
+    if([[self oauthViewControllerTouch] checkAuthorizationForOperation:@selector(removeInstantButtonPressed:) forOperationController: self withNavController:[self navigationController]]) {
         
-        NSString *currentUserStr = [self getCurrentUser];
+        NSString *currentUserStr = [[self oauthViewControllerTouch] getCurrentUser];
         NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"http://api-public.netflix.com/users/"];
         [queueStrUrl appendString:currentUserStr];
         [queueStrUrl appendString:@"/queues/instant/available/"];

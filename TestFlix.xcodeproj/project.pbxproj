@@ -12,9 +12,14 @@
 		0341FB7F170BBD2D0009BB8C /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 0341FB7E170BBD2D0009BB8C /* Constants.m */; };
 		0345820E1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345820B1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m */; };
 		0345820F1642249600A7E4CE /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345820D1642249600A7E4CE /* UIScrollView+SVPullToRefresh.m */; };
+		035F1F2F174C783B007BF47A /* queue.png in Resources */ = {isa = PBXBuildFile; fileRef = 035F1F2E174C783B007BF47A /* queue.png */; };
 		03639B2A16A1C28100B367CA /* OAuthViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 03639B2916A1C28100B367CA /* OAuthViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		03639B2B16A1C28100B367CA /* OAuthViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 03639B2916A1C28100B367CA /* OAuthViewControllerTouch.m */; };
 		037834EC1624F7CF00827EB6 /* MovieDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037834EB1624F7CF00827EB6 /* MovieDetailViewController.m */; };
+		0379A430174DB7C9004A9C1B /* InstantQueueTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0379A42E174DB7C9004A9C1B /* InstantQueueTableViewController.m */; };
+		0379A431174DB7C9004A9C1B /* InstantQueueTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0379A42F174DB7C9004A9C1B /* InstantQueueTableViewController.xib */; };
+		0379A444174DB91F004A9C1B /* DvdQueueTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0379A442174DB91F004A9C1B /* DvdQueueTableViewController.m */; };
+		0379A445174DB91F004A9C1B /* DvdQueueTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0379A443174DB91F004A9C1B /* DvdQueueTableViewController.xib */; };
 		0384B3EA165C80D20036328E /* Link.m in Sources */ = {isa = PBXBuildFile; fileRef = 0384B3E9165C80D20036328E /* Link.m */; };
 		0384B3ED165C80E50036328E /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 0384B3EC165C80E50036328E /* Category.m */; };
 		03B473AE161A8641001B3EAE /* CatalogTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B473AD161A8641001B3EAE /* CatalogTitle.m */; };
@@ -147,10 +152,17 @@
 		0345820B1642249600A7E4CE /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
 		0345820C1642249600A7E4CE /* UIScrollView+SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVPullToRefresh.h"; sourceTree = "<group>"; };
 		0345820D1642249600A7E4CE /* UIScrollView+SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVPullToRefresh.m"; sourceTree = "<group>"; };
+		035F1F2E174C783B007BF47A /* queue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queue.png; sourceTree = "<group>"; };
 		03639B2816A1C28100B367CA /* OAuthViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthViewControllerTouch.h; sourceTree = "<group>"; };
 		03639B2916A1C28100B367CA /* OAuthViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthViewControllerTouch.m; sourceTree = "<group>"; };
 		037834EA1624F7CF00827EB6 /* MovieDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieDetailViewController.h; sourceTree = "<group>"; };
 		037834EB1624F7CF00827EB6 /* MovieDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieDetailViewController.m; sourceTree = "<group>"; };
+		0379A42D174DB7C9004A9C1B /* InstantQueueTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstantQueueTableViewController.h; sourceTree = "<group>"; };
+		0379A42E174DB7C9004A9C1B /* InstantQueueTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstantQueueTableViewController.m; sourceTree = "<group>"; };
+		0379A42F174DB7C9004A9C1B /* InstantQueueTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstantQueueTableViewController.xib; sourceTree = "<group>"; };
+		0379A441174DB91F004A9C1B /* DvdQueueTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DvdQueueTableViewController.h; sourceTree = "<group>"; };
+		0379A442174DB91F004A9C1B /* DvdQueueTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DvdQueueTableViewController.m; sourceTree = "<group>"; };
+		0379A443174DB91F004A9C1B /* DvdQueueTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DvdQueueTableViewController.xib; sourceTree = "<group>"; };
 		0384B3E8165C80D20036328E /* Link.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Link.h; sourceTree = "<group>"; };
 		0384B3E9165C80D20036328E /* Link.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Link.m; sourceTree = "<group>"; };
 		0384B3EB165C80E50036328E /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
@@ -302,6 +314,10 @@
 				03BC8B25160FABBE00AF2E71 /* SearchResultsTableViewController.m */,
 				03639B2816A1C28100B367CA /* OAuthViewControllerTouch.h */,
 				03639B2916A1C28100B367CA /* OAuthViewControllerTouch.m */,
+				0379A42D174DB7C9004A9C1B /* InstantQueueTableViewController.h */,
+				0379A42E174DB7C9004A9C1B /* InstantQueueTableViewController.m */,
+				0379A441174DB91F004A9C1B /* DvdQueueTableViewController.h */,
+				0379A442174DB91F004A9C1B /* DvdQueueTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -464,6 +480,7 @@
 			children = (
 				03289B6616F7FBE300AFCC64 /* OAuthSettings.plist */,
 				03D0FE7215FD92720051D36A /* TestFlix-Info.plist */,
+				035F1F2E174C783B007BF47A /* queue.png */,
 				03D0FE7315FD92720051D36A /* InfoPlist.strings */,
 				03D0FE7615FD92720051D36A /* main.m */,
 				03D0FE7815FD92720051D36A /* TestFlix-Prefix.pch */,
@@ -506,6 +523,8 @@
 			isa = PBXGroup;
 			children = (
 				03CCE63916F93EAF007004A6 /* SearchMovieViewController.xib */,
+				0379A443174DB91F004A9C1B /* DvdQueueTableViewController.xib */,
+				0379A42F174DB7C9004A9C1B /* InstantQueueTableViewController.xib */,
 				03CCE63B16F94829007004A6 /* SearchResultsTableViewController.xib */,
 				03CCE63D16F958AB007004A6 /* MovieDetailViewController.xib */,
 				03D0FE7C15FD92720051D36A /* MainStoryboard_iPhone.storyboard */,
@@ -645,6 +664,9 @@
 				03CCE63C16F94829007004A6 /* SearchResultsTableViewController.xib in Resources */,
 				03CCE63E16F958AB007004A6 /* MovieDetailViewController.xib in Resources */,
 				03CCE64616F9627B007004A6 /* OAuthViewControllerTouch.xib in Resources */,
+				035F1F2F174C783B007BF47A /* queue.png in Resources */,
+				0379A431174DB7C9004A9C1B /* InstantQueueTableViewController.xib in Resources */,
+				0379A445174DB91F004A9C1B /* DvdQueueTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +734,8 @@
 				03C213EB16A30F09000DBB02 /* GTMReadMonitorInputStream.m in Sources */,
 				03C213F116A30F09000DBB02 /* GTMOAuthViewControllerTouch.m in Sources */,
 				0341FB7F170BBD2D0009BB8C /* Constants.m in Sources */,
+				0379A430174DB7C9004A9C1B /* InstantQueueTableViewController.m in Sources */,
+				0379A444174DB91F004A9C1B /* DvdQueueTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

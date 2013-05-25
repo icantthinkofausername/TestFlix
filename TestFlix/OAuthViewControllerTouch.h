@@ -31,6 +31,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *tokenField;
 @property (nonatomic, strong) UINavigationController *navController;
 @property (nonatomic, assign)  SEL mCurrentOperation;
+@property (nonatomic, retain) id currentOperationController;
 
 - (IBAction)signInOutClicked:(id)sender;
 - (IBAction)toggleShouldSaveInKeychain:(id)sender;
@@ -48,6 +49,10 @@
                                withHTTPMethod: (NSString *) httpMethod;
 - (NSData *)doSynchronousAuthenticatedAPIFetchAt:(NSURL *)theUrl
                                   withHTTPMethod: (NSString *) httpMethod;
+-(BOOL)checkAuthorizationForOperation:(SEL) currentOperation
+                    forOperationController: (id) operationController
+                    withNavController: (UINavigationController *) navigationController;
+-(NSString *) getCurrentUser;
 
 
 @end
