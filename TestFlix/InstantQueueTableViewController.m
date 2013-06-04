@@ -42,11 +42,34 @@
 
 }
 
+- (void)request:(RKRequest*)request didLoadResponse:(RKResponse*)response
+{
+    if ([request isGET]) {
+        // Handling GET /foo.xml
+        
+        if ([response isOK]) {
+            // Success! Let's take a look at the data
+            NSLog(@"Retrieved XML: %@", [response bodyAsString]);
+        }
+        
+    } else if ([request isPOST]) {
+        
+        // Handling POST /other.json
+        if ([response isJSON]) {
+            NSLog(@"Got a JSON response back from our POST!");
+        }
+        
+    } else if ([request isDELETE]) {
+        
+        // Handling DELETE /missing_resource.txt
+        if ([response isNotFound]) {
+            NSLog(@"The resource path '%@' was not found.", [request resourcePath]);
+        }
+    }
+}
+
 -(void) loadQueue
 {
-    
-
-    
     if([[self oauthViewControllerTouch] checkAuthorizationForOperation:@selector(loadQueue:) forOperationController: self withNavController: [self navigationController]]) {
         NSString *currentUserStr = [[self oauthViewControllerTouch] getCurrentUser];
         NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"/users/"];
@@ -60,17 +83,16 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     
     if([self oauthViewControllerTouch] == nil) {
         [self setOauthViewControllerTouch: [[OAuthViewControllerTouch alloc] init]];
+        [[self oauthViewControllerTouch] awakeFromNib];
     }
     
-    [[self oauthViewControllerTouch] awakeFromNib];
     [self loadQueue];
-    
 
 }
 

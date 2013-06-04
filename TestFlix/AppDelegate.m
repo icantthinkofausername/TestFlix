@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "CatalogTitles.h"
 #import "CatalogTitle.h"
+#import "QueueItem.h"
+#import "Queue.h"
 #import "Link.h"
 #import "Category.h"
 #import "OAuthStore.h"
@@ -62,11 +64,12 @@
     [instantQueueNavigationController setTabBarItem: instantQueueTabBarItem];
 
     UINavigationController *dvdQueueNavigationController = [[UINavigationController alloc] initWithRootViewController:[[DvdQueueTableViewController alloc] init]];
-    UITabBarItem *dvdQueueTabBarItem = [[UITabBarItem alloc] initWithTitle:@"DVD Queue" image:[UIImage imageNamed:@"queue.png"] tag:1];
+    UITabBarItem *dvdQueueTabBarItem = [[UITabBarItem alloc] initWithTitle:@"DVD Queue" image:[UIImage imageNamed:@"queue.png"] tag:2];
     [dvdQueueNavigationController setTabBarItem: dvdQueueTabBarItem];
     
     NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithObjects:searchNavigationController, instantQueueNavigationController, dvdQueueNavigationController, nil];
     [tabBarController setViewControllers:viewControllers];
+    [tabBarController setDelegate:self];
     [[self window] setRootViewController:tabBarController];
 
  //   [[self window] setRootViewController:navigationController];
@@ -98,14 +101,19 @@
     [catalogTitleMapping mapKeyPath:@"average_rating" toAttribute:@"averageRating"];
     [catalogTitleMapping mapKeyPath:@"link" toRelationship:@"link" withMapping:linkMapping];
     [catalogTitleMapping mapKeyPath:@"category" toRelationship:@"category" withMapping:categoryMapping];
-
     
     RKObjectMapping* catalogTitlesMapping = [RKObjectMapping mappingForClass:[CatalogTitles class]];
     [catalogTitlesMapping mapKeyPath:@"number_of_results" toAttribute:@"numberOfResults"];
     [catalogTitlesMapping mapKeyPath:@"start_index" toAttribute:@"startIndex"];
     [catalogTitlesMapping mapKeyPath:@"catalog_title" toRelationship:@"catalogTitle" withMapping:catalogTitleMapping];
-    
     [objectManager.mappingProvider setObjectMapping:catalogTitlesMapping forKeyPath:@"catalog_titles"];
+    
+    RKObjectMapping* queueItemMapping = [RKObjectMapping mappingForClass:[QueueItem class]];
+    [queueItemMapping mapKeyPath:@"title.regular" toAttribute:@"regularTitle"];  
+    
+    RKObjectMapping* queueMapping = [RKObjectMapping mappingForClass:[Queue class]];
+    [queueMapping mapKeyPath:@"queue_item" toRelationship:@"queueItem" withMapping:queueItemMapping];
+    [objectManager.mappingProvider setObjectMapping:queueMapping forKeyPath:@"queue"];
     return YES;
 }
 
@@ -178,6 +186,11 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)tabBarController:(UITabBarController *)theTabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    return (theTabBarController.selectedViewController != viewController);
 }
 
 @end

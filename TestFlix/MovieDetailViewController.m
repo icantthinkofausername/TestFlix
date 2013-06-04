@@ -74,15 +74,14 @@
     return aString;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
 
     if([self oauthViewControllerTouch] == nil) {
         [self setOauthViewControllerTouch: [[OAuthViewControllerTouch alloc] init]];
+        [[self oauthViewControllerTouch] awakeFromNib];
     }
-    
-    [[self oauthViewControllerTouch] awakeFromNib];
 
     [[self movieTitleLabel] setNumberOfLines: 0];
     [[self movieTitleLabel] setText:[[self catalogTitle] regularTitle]];

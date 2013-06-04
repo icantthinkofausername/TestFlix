@@ -27,15 +27,15 @@
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     
     if([self oauthViewControllerTouch] == nil) {
         [self setOauthViewControllerTouch: [[OAuthViewControllerTouch alloc] init]];
+        [[self oauthViewControllerTouch] awakeFromNib];
     }
     
-    [[self oauthViewControllerTouch] awakeFromNib];
    // [self loadQueue];
 }
 

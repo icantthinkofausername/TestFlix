@@ -58,6 +58,8 @@
 		03C213F416A30F09000DBB02 /* GTMOAuthViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03C213D416A30F09000DBB02 /* GTMOAuthViewTouch.xib */; };
 		03C213F516A30F09000DBB02 /* UnitTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03C213D616A30F09000DBB02 /* UnitTests-Info.plist */; };
 		03C213F616A30F09000DBB02 /* UnitTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03C213D616A30F09000DBB02 /* UnitTests-Info.plist */; };
+		03C690F2175D975D002E51ED /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C690F1175D975D002E51ED /* Queue.m */; };
+		03C690F9175D9787002E51ED /* QueueItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C690F8175D9787002E51ED /* QueueItem.m */; };
 		03CCE63A16F93EAF007004A6 /* SearchMovieViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CCE63916F93EAF007004A6 /* SearchMovieViewController.xib */; };
 		03CCE63C16F94829007004A6 /* SearchResultsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CCE63B16F94829007004A6 /* SearchResultsTableViewController.xib */; };
 		03CCE63E16F958AB007004A6 /* MovieDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CCE63D16F958AB007004A6 /* MovieDetailViewController.xib */; };
@@ -201,6 +203,10 @@
 		03C213D316A30F09000DBB02 /* GTMOAuthViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuthViewControllerTouch.m; sourceTree = "<group>"; };
 		03C213D416A30F09000DBB02 /* GTMOAuthViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuthViewTouch.xib; sourceTree = "<group>"; };
 		03C213D616A30F09000DBB02 /* UnitTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "UnitTests-Info.plist"; path = "GTMOAuth/UnitTests-Info.plist"; sourceTree = "<group>"; };
+		03C690F0175D975D002E51ED /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
+		03C690F1175D975D002E51ED /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Queue.m; sourceTree = "<group>"; };
+		03C690F7175D9787002E51ED /* QueueItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueItem.h; sourceTree = "<group>"; };
+		03C690F8175D9787002E51ED /* QueueItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueItem.m; sourceTree = "<group>"; };
 		03CCE63916F93EAF007004A6 /* SearchMovieViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchMovieViewController.xib; sourceTree = "<group>"; };
 		03CCE63B16F94829007004A6 /* SearchResultsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewController.xib; sourceTree = "<group>"; };
 		03CCE63D16F958AB007004A6 /* MovieDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MovieDetailViewController.xib; sourceTree = "<group>"; };
@@ -341,6 +347,10 @@
 				0384B3EC165C80E50036328E /* Category.m */,
 				0341FB7D170BBD2D0009BB8C /* Constants.h */,
 				0341FB7E170BBD2D0009BB8C /* Constants.m */,
+				03C690F0175D975D002E51ED /* Queue.h */,
+				03C690F1175D975D002E51ED /* Queue.m */,
+				03C690F7175D9787002E51ED /* QueueItem.h */,
+				03C690F8175D9787002E51ED /* QueueItem.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -736,6 +746,8 @@
 				0341FB7F170BBD2D0009BB8C /* Constants.m in Sources */,
 				0379A430174DB7C9004A9C1B /* InstantQueueTableViewController.m in Sources */,
 				0379A444174DB91F004A9C1B /* DvdQueueTableViewController.m in Sources */,
+				03C690F2175D975D002E51ED /* Queue.m in Sources */,
+				03C690F9175D9787002E51ED /* QueueItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
