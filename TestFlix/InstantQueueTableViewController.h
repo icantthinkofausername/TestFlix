@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "OauthViewControllerTouch.h"
+#import "ViewControllerSelected.h"
+#import "Queue.h"
 
-@interface InstantQueueTableViewController : UITableViewController
+@interface InstantQueueTableViewController : UITableViewController <ViewControllerSelected>
 @property (nonatomic, strong) OAuthViewControllerTouch *oauthViewControllerTouch;
+@property (nonatomic, strong) Queue *queue;
+- (void) viewWasClicked;
 @end

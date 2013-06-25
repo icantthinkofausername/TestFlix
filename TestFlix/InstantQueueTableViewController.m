@@ -11,6 +11,8 @@
 #import <RestKit/RestKit.h>
 #import "OAuthStore.h"
 #import "OAuthViewControllerTouch.h"
+#import "Queue.h"
+#import "QueueItem.h"
 
 
 @interface InstantQueueTableViewController () <RKRequestDelegate, RKObjectLoaderDelegate>
@@ -20,6 +22,7 @@
 @implementation InstantQueueTableViewController
 
 @synthesize oauthViewControllerTouch = _oauthViewControllerTouch;
+@synthesize queue = _queue;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -32,8 +35,20 @@
 
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects
 {
-
     RKLogInfo(@"Load collection of Articles: %@", objects);
+    if([objects count] > 0) {
+        Queue *queue = [objects objectAtIndex:0];
+        NSArray *queueItems = [queue queueItem];
+        for(int i = 0; i < [queueItems count]; i++) {
+            [[[self queue] queueItem] addObject: [queueItems objectAtIndex:i]];
+            
+            //  the @ sign is an array literal
+           // [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow: [[[self catalogTitles] catalogTitle] count] -1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+        }
+        NSLog(@"Number of results is %d", [[queue queueItem] count]);
+    }
+    
+    [[self tableView] reloadData];
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error
@@ -70,7 +85,7 @@
 
 -(void) loadQueue
 {
-    if([[self oauthViewControllerTouch] checkAuthorizationForOperation:@selector(loadQueue:) forOperationController: self withNavController: [self navigationController]]) {
+    if([[self oauthViewControllerTouch] checkAuthorizationForOperation:@selector(loadQueue) forOperationController: self withNavController: [self navigationController]]) {
         NSString *currentUserStr = [[self oauthViewControllerTouch] getCurrentUser];
         NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"/users/"];
         [queueStrUrl appendString:currentUserStr];
@@ -87,13 +102,22 @@
 {
     [super viewDidAppear:animated];
     
+    [self setQueue: [[Queue alloc] init]];
+    [[self queue] setQueueItem: [[NSMutableArray alloc] init]];
+    
     if([self oauthViewControllerTouch] == nil) {
         [self setOauthViewControllerTouch: [[OAuthViewControllerTouch alloc] init]];
         [[self oauthViewControllerTouch] awakeFromNib];
-    }
-    
-    [self loadQueue];
+    }    
+}
 
+- (void) viewControllerWasSelected
+{
+    if([self oauthViewControllerTouch] == nil) {
+        [self setOauthViewControllerTouch: [[OAuthViewControllerTouch alloc] init]];
+        [[self oauthViewControllerTouch] awakeFromNib];
+    } 
+    [self loadQueue];
 }
 
 - (void)viewDidLoad
@@ -117,27 +141,33 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    if([self queue]) {
+        return [[[self queue]queueItem]count];
+    }
+    else{
+        return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"UITableViewCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     // Configure the cell...
+  //  [[cell textLabel] setText: [[[[self catalogTitles] catalogTitle] objectAtIndex:[indexPath row]] regularTitle]];
+
+    [[cell textLabel] setText: [[[[self queue] queueItem] objectAtIndex:[indexPath row]] regularTitle]];
     
     return cell;
 }

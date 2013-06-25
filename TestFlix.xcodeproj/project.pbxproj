@@ -157,6 +157,7 @@
 		035F1F2E174C783B007BF47A /* queue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queue.png; sourceTree = "<group>"; };
 		03639B2816A1C28100B367CA /* OAuthViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthViewControllerTouch.h; sourceTree = "<group>"; };
 		03639B2916A1C28100B367CA /* OAuthViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthViewControllerTouch.m; sourceTree = "<group>"; };
+		0375E6A0177944090044A0B3 /* ViewControllerSelected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewControllerSelected.h; sourceTree = "<group>"; };
 		037834EA1624F7CF00827EB6 /* MovieDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieDetailViewController.h; sourceTree = "<group>"; };
 		037834EB1624F7CF00827EB6 /* MovieDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieDetailViewController.m; sourceTree = "<group>"; };
 		0379A42D174DB7C9004A9C1B /* InstantQueueTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstantQueueTableViewController.h; sourceTree = "<group>"; };
@@ -324,6 +325,7 @@
 				0379A42E174DB7C9004A9C1B /* InstantQueueTableViewController.m */,
 				0379A441174DB91F004A9C1B /* DvdQueueTableViewController.h */,
 				0379A442174DB91F004A9C1B /* DvdQueueTableViewController.m */,
+				0375E6A0177944090044A0B3 /* ViewControllerSelected.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

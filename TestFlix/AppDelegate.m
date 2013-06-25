@@ -17,6 +17,7 @@
 #import "SearchMovieViewController.h"
 #import "InstantQueueTableViewController.h"
 #import "DvdQueueTableViewController.h"
+#import "ViewControllerSelected.h"
 #import <RestKit/RestKit.h>
 
 @implementation AppDelegate
@@ -191,6 +192,15 @@
 - (BOOL)tabBarController:(UITabBarController *)theTabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     return (theTabBarController.selectedViewController != viewController);
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    UINavigationController *nc = (UINavigationController *) viewController;
+    if([[nc topViewController] conformsToProtocol: @protocol(ViewControllerSelected)]) {
+        [[nc topViewController] loadView];
+        [[nc topViewController]  performSelector:@selector(viewControllerWasSelected) withObject: nil];
+    }
 }
 
 @end
