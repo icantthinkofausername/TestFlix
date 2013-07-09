@@ -6,13 +6,17 @@
 //  Copyright (c) 2013 Joshua Palermo. All rights reserved.
 //
 
+#import "CatalogTitles.h"
+#import "CatalogTitle.h"
 #import "InstantQueueTableViewController.h"
+#import "MovieDetailViewController.h"
 #import "OAuthViewControllerTouch.h"
 #import <RestKit/RestKit.h>
 #import "OAuthStore.h"
 #import "OAuthViewControllerTouch.h"
 #import "Queue.h"
 #import "QueueItem.h"
+
 
 
 @interface InstantQueueTableViewController () <RKRequestDelegate, RKObjectLoaderDelegate>
@@ -23,6 +27,8 @@
 
 @synthesize oauthViewControllerTouch = _oauthViewControllerTouch;
 @synthesize queue = _queue;
+@synthesize catalogTitles = _catalogTitles;
+@synthesize mdvc = _mdvc;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -37,15 +43,15 @@
 {
     RKLogInfo(@"Load collection of Articles: %@", objects);
     if([objects count] > 0) {
-        Queue *queue = [objects objectAtIndex:0];
-        NSArray *queueItems = [queue queueItem];
-        for(int i = 0; i < [queueItems count]; i++) {
-            [[[self queue] queueItem] addObject: [queueItems objectAtIndex:i]];
+        CatalogTitles *catalogTitles = [objects objectAtIndex:0];
+        NSArray *catalogTitle = [catalogTitles catalogTitle];
+        for(int i = 0; i < [catalogTitle count]; i++) {
+            [[[self catalogTitles] catalogTitle] addObject: [catalogTitle objectAtIndex:i]];
             
             //  the @ sign is an array literal
            // [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow: [[[self catalogTitles] catalogTitle] count] -1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
         }
-        NSLog(@"Number of results is %d", [[queue queueItem] count]);
+        NSLog(@"Number of results is %d", [[catalogTitles catalogTitle] count]);
     }
     
     [[self tableView] reloadData];
@@ -89,7 +95,7 @@
         NSString *currentUserStr = [[self oauthViewControllerTouch] getCurrentUser];
         NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"/users/"];
         [queueStrUrl appendString:currentUserStr];
-        [queueStrUrl appendString:@"/queues/instant"];
+        [queueStrUrl appendString:@"/queues/instant?expand=synopsis,formats"];
         
         RKObjectManager *objectManager = [RKObjectManager sharedManager];
         [objectManager loadObjectsAtResourcePath:queueStrUrl delegate:self];
@@ -101,6 +107,9 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
+    [self setCatalogTitles: [[CatalogTitles alloc] init]];
+    [[self catalogTitles] setCatalogTitle: [[NSMutableArray alloc] init]];
     
     [self setQueue: [[Queue alloc] init]];
     [[self queue] setQueueItem: [[NSMutableArray alloc] init]];
@@ -148,8 +157,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if([self queue]) {
-        return [[[self queue]queueItem]count];
+    if([self catalogTitles]) {
+        return [[[self catalogTitles]catalogTitle]count];
     }
     else{
         return 0;
@@ -167,7 +176,7 @@
     // Configure the cell...
   //  [[cell textLabel] setText: [[[[self catalogTitles] catalogTitle] objectAtIndex:[indexPath row]] regularTitle]];
 
-    [[cell textLabel] setText: [[[[self queue] queueItem] objectAtIndex:[indexPath row]] regularTitle]];
+    [[cell textLabel] setText: [[[[self catalogTitles] catalogTitle] objectAtIndex:[indexPath row]] regularTitle]];
     
     return cell;
 }
@@ -216,12 +225,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    //MovieDetailViewController *mdvc = [[MovieDetailViewController alloc] init];
+    if([self mdvc] == nil) {
+        [self setMdvc: [[MovieDetailViewController alloc] init]];
+    }
+    CatalogTitle *catalogTitle = [[[self catalogTitles] catalogTitle] objectAtIndex:[indexPath row]];
+    [[self mdvc] setCatalogTitle: catalogTitle];
+    [[self navigationController] pushViewController:[self mdvc] animated:YES];
 }
 
 @end

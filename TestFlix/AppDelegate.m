@@ -109,12 +109,29 @@
     [catalogTitlesMapping mapKeyPath:@"catalog_title" toRelationship:@"catalogTitle" withMapping:catalogTitleMapping];
     [objectManager.mappingProvider setObjectMapping:catalogTitlesMapping forKeyPath:@"catalog_titles"];
     
-    RKObjectMapping* queueItemMapping = [RKObjectMapping mappingForClass:[QueueItem class]];
-    [queueItemMapping mapKeyPath:@"title.regular" toAttribute:@"regularTitle"];  
+    RKObjectMapping* queueItemMapping = [RKObjectMapping mappingForClass:[CatalogTitle class]];
+    [queueItemMapping mapKeyPath:@"title.regular" toAttribute:@"regularTitle"];
+    [queueItemMapping mapKeyPath:@"box_art.small" toAttribute:@"smallBoxArtUrl"];
+    [queueItemMapping mapKeyPath:@"box_art.medium" toAttribute:@"mediumBoxArtUrl"];
+    [queueItemMapping mapKeyPath:@"box_art.large" toAttribute:@"largeBoxArtUrl"];
+    [queueItemMapping mapKeyPath:@"id" toAttribute:@"titleIdUrl"];
+    [queueItemMapping mapKeyPath:@"release_year" toAttribute:@"releaseYear"];
+    [queueItemMapping mapKeyPath:@"average_rating" toAttribute:@"averageRating"];
+    [queueItemMapping mapKeyPath:@"link" toRelationship:@"link" withMapping:linkMapping];
+    [queueItemMapping mapKeyPath:@"category" toRelationship:@"category" withMapping:categoryMapping];
     
-    RKObjectMapping* queueMapping = [RKObjectMapping mappingForClass:[Queue class]];
-    [queueMapping mapKeyPath:@"queue_item" toRelationship:@"queueItem" withMapping:queueItemMapping];
+    RKObjectMapping* queueMapping = [RKObjectMapping mappingForClass:[CatalogTitles class]];
+    [queueMapping mapKeyPath:@"number_of_results" toAttribute:@"numberOfResults"];
+    [queueMapping mapKeyPath:@"start_index" toAttribute:@"startIndex"];
+    [queueMapping mapKeyPath:@"queue_item" toRelationship:@"catalogTitle" withMapping:queueItemMapping];
     [objectManager.mappingProvider setObjectMapping:queueMapping forKeyPath:@"queue"];
+    
+    //RKObjectMapping* queueItemMapping = [RKObjectMapping mappingForClass:[QueueItem class]];
+    //[queueItemMapping mapKeyPath:@"title.regular" toAttribute:@"regularTitle"];
+    
+    //RKObjectMapping* queueMapping = [RKObjectMapping mappingForClass:[Queue class]];
+    //[queueMapping mapKeyPath:@"queue_item" toRelationship:@"queueItem" withMapping:queueItemMapping];
+    //[objectManager.mappingProvider setObjectMapping:queueMapping forKeyPath:@"queue"];
     return YES;
 }
 

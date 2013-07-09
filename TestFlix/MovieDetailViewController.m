@@ -76,6 +76,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    // TODO: Nil check the synopsis and formats!
+    
     [super viewDidAppear:animated];
 
     if([self oauthViewControllerTouch] == nil) {

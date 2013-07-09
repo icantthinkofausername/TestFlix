@@ -16,9 +16,9 @@
 @interface SearchMovieViewController () <RKRequestDelegate, RKObjectLoaderDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *searchField;
-@property NSString *responseBody;
-@property CatalogTitles *catalogTitles;
-@property NSMutableString *searchUrl;
+@property (nonatomic, strong) NSString *responseBody;
+@property (nonatomic, strong) CatalogTitles *catalogTitles;
+@property (nonatomic, strong) NSMutableString *searchUrl;
 
 @end
 
