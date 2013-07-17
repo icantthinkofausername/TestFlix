@@ -1,5 +1,5 @@
 //
-//  InstantQueueTableViewController.m
+//  QueueTableViewController.m
 //  TestFlix
 //
 //  Created by Joshua Palermo on 5/22/13.
@@ -8,25 +8,23 @@
 
 #import "CatalogTitles.h"
 #import "CatalogTitle.h"
-#import "InstantQueueTableViewController.h"
+#import "QueueTableViewController.h"
 #import "MovieDetailViewController.h"
 #import "OAuthViewControllerTouch.h"
 #import <RestKit/RestKit.h>
 #import "OAuthStore.h"
 #import "OAuthViewControllerTouch.h"
-#import "Queue.h"
-#import "QueueItem.h"
 
 
 
-@interface InstantQueueTableViewController () <RKRequestDelegate, RKObjectLoaderDelegate>
+@interface QueueTableViewController () <RKRequestDelegate, RKObjectLoaderDelegate>
 
 @end
 
-@implementation InstantQueueTableViewController
+@implementation QueueTableViewController
 
 @synthesize oauthViewControllerTouch = _oauthViewControllerTouch;
-@synthesize queue = _queue;
+@synthesize queueType = _queueType;
 @synthesize catalogTitles = _catalogTitles;
 @synthesize mdvc = _mdvc;
 
@@ -36,6 +34,17 @@
     if (self) {
         // Custom initialization
     }
+    return self;
+}
+
+- (id) initWithQueueType: (NSString *)queueType
+{
+    // Call superclass's initializer
+    self = [super init];
+    if( !self ) return nil;
+    
+    [self setQueueType: queueType];
+    
     return self;
 }
 
@@ -95,7 +104,9 @@
         NSString *currentUserStr = [[self oauthViewControllerTouch] getCurrentUser];
         NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"/users/"];
         [queueStrUrl appendString:currentUserStr];
-        [queueStrUrl appendString:@"/queues/instant?expand=synopsis,formats"];
+        [queueStrUrl appendString:@"/queues/"];
+        [queueStrUrl appendString: [self queueType]];
+        [queueStrUrl appendString:@"?expand=synopsis,formats"];
         
         RKObjectManager *objectManager = [RKObjectManager sharedManager];
         [objectManager loadObjectsAtResourcePath:queueStrUrl delegate:self];
@@ -107,12 +118,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    [self setCatalogTitles: [[CatalogTitles alloc] init]];
-    [[self catalogTitles] setCatalogTitle: [[NSMutableArray alloc] init]];
     
-    [self setQueue: [[Queue alloc] init]];
-    [[self queue] setQueueItem: [[NSMutableArray alloc] init]];
+    if(![self catalogTitles]) {
+        [self setCatalogTitles: [[CatalogTitles alloc] init]];
+        [[self catalogTitles] setCatalogTitle: [[NSMutableArray alloc] init]];
+    }
     
     if([self oauthViewControllerTouch] == nil) {
         [self setOauthViewControllerTouch: [[OAuthViewControllerTouch alloc] init]];

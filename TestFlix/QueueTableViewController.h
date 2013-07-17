@@ -12,12 +12,12 @@
 #import "MovieDetailViewController.h"
 #import "OauthViewControllerTouch.h"
 #import "ViewControllerSelected.h"
-#import "Queue.h"
 
-@interface InstantQueueTableViewController : UITableViewController <ViewControllerSelected>
+@interface QueueTableViewController : UITableViewController <ViewControllerSelected>
 @property (nonatomic, strong) OAuthViewControllerTouch *oauthViewControllerTouch;
-@property (nonatomic, strong) Queue *queue;
+@property (nonatomic, strong) NSString *queueType;
 @property (nonatomic, strong) CatalogTitles *catalogTitles;
 @property (nonatomic, strong) MovieDetailViewController *mdvc;
 - (void) viewWasClicked;
+- (id) initWithQueueType: (NSString *)queueType;
 @end

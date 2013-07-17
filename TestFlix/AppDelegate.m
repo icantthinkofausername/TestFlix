@@ -9,14 +9,12 @@
 #import "AppDelegate.h"
 #import "CatalogTitles.h"
 #import "CatalogTitle.h"
-#import "QueueItem.h"
-#import "Queue.h"
-#import "Link.h"
 #import "Category.h"
+#import "Constants.h"
+#import "Link.h"
 #import "OAuthStore.h"
 #import "SearchMovieViewController.h"
-#import "InstantQueueTableViewController.h"
-#import "DvdQueueTableViewController.h"
+#import "QueueTableViewController.h"
 #import "ViewControllerSelected.h"
 #import <RestKit/RestKit.h>
 
@@ -60,11 +58,11 @@
     //[viewController2 setTabBarItem: [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFavorites tag:0]];
     //[[viewController2 tabBarItem] setTitle: @"Queue"];
     
-    UINavigationController *instantQueueNavigationController = [[UINavigationController alloc] initWithRootViewController:[[InstantQueueTableViewController alloc] init]];
+    UINavigationController *instantQueueNavigationController = [[UINavigationController alloc] initWithRootViewController:[[QueueTableViewController alloc] initWithQueueType:InstantQueueType]];
     UITabBarItem *instantQueueTabBarItem = [[UITabBarItem alloc] initWithTitle:@"Instant Queue" image:[UIImage imageNamed:@"queue.png"] tag:1];
     [instantQueueNavigationController setTabBarItem: instantQueueTabBarItem];
 
-    UINavigationController *dvdQueueNavigationController = [[UINavigationController alloc] initWithRootViewController:[[DvdQueueTableViewController alloc] init]];
+    UINavigationController *dvdQueueNavigationController = [[UINavigationController alloc] initWithRootViewController:[[QueueTableViewController alloc] initWithQueueType: DvdQueueType]];
     UITabBarItem *dvdQueueTabBarItem = [[UITabBarItem alloc] initWithTitle:@"DVD Queue" image:[UIImage imageNamed:@"queue.png"] tag:2];
     [dvdQueueNavigationController setTabBarItem: dvdQueueTabBarItem];
     

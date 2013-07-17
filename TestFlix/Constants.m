@@ -13,6 +13,8 @@
 NSString *const OAuthAuthenticationSucceededNotification = @"OAuthAuthenticationSucceededNotification";
 NSString *const AsynchronousAuthenticatedAPIFetchStartedNotification = @"AsynchronousAuthenticatedAPIFetchStartedNotification";
 NSString *const AsynchronousAuthenticatedAPIFetchStoppedNotification = @"AsynchronousAuthenticatedAPIFetchStoppedNotification";
+NSString *const InstantQueueType = @"instant";
+NSString *const DvdQueueType = @"disc";
 
 NSString *const OPERATION_KEY = @"OPERATION_KEY";
 

@@ -567,7 +567,8 @@ static NSString *const kKeychainItemName = @"Testflix";
 
 - (BOOL)shouldSaveInKeychain {
     //return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldSaveInKeychainKey];
-    return NO;
+    //return NO;
+    return YES;
 }
 
 @end

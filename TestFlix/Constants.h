@@ -13,6 +13,8 @@
 FOUNDATION_EXPORT NSString *const OAuthAuthenticationSucceededNotification;
 FOUNDATION_EXPORT NSString *const AsynchronousAuthenticatedAPIFetchStartedNotification;
 FOUNDATION_EXPORT NSString *const AsynchronousAuthenticatedAPIFetchStoppedNotification;
+FOUNDATION_EXPORT NSString *const InstantQueueType;
+FOUNDATION_EXPORT NSString *const DvdQueueType;
 FOUNDATION_EXPORT NSString *const OPERATION_KEY;
 
 
