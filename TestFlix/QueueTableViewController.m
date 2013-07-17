@@ -102,14 +102,16 @@
 {
     if([[self oauthViewControllerTouch] checkAuthorizationForOperation:@selector(loadQueue) forOperationController: self withNavController: [self navigationController]]) {
         NSString *currentUserStr = [[self oauthViewControllerTouch] getCurrentUser];
-        NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"/users/"];
-        [queueStrUrl appendString:currentUserStr];
-        [queueStrUrl appendString:@"/queues/"];
-        [queueStrUrl appendString: [self queueType]];
-        [queueStrUrl appendString:@"?expand=synopsis,formats"];
+        if(currentUserStr) {
+            NSMutableString *queueStrUrl = [[NSMutableString alloc] initWithString:@"/users/"];
+            [queueStrUrl appendString:currentUserStr];
+            [queueStrUrl appendString:@"/queues/"];
+            [queueStrUrl appendString: [self queueType]];
+            [queueStrUrl appendString:@"?expand=synopsis,formats"];
         
-        RKObjectManager *objectManager = [RKObjectManager sharedManager];
-        [objectManager loadObjectsAtResourcePath:queueStrUrl delegate:self];
+            RKObjectManager *objectManager = [RKObjectManager sharedManager];
+            [objectManager loadObjectsAtResourcePath:queueStrUrl delegate:self];
+        }
     }
 
 }

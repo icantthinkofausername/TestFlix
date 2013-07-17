@@ -1,1 +1,5 @@
 
+[submodule "RestKit"]
+	path = RestKit
+	url = https://github.com/icantthinkofausername/RestKit.git
+	branch = dev-rkcatalog-fix
